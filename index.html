@@ -16,16 +16,16 @@
   --brand:#0f1622;
   --accent:#b89a78;
   --muted:#7a818c;
-  --bg:#F8F1E5; /* brand color (was white) */
+  --bg:#F8F1E5;
   --glass:rgba(248,241,229,0.45);
   --glass-border:rgba(248,241,229,0.18);
   --radius:16px;
   --max-content-width:1200px;
 
-  /* header heights */
+  /* header heights (defaults) */
   --topbar-height:32px;
-  --masthead-height:70px;    /* area with centered logo and icons */
-  --nav-height:56px;         /* sticky nav height */
+  --masthead-height:70px;
+  --nav-height:56px;
 }
 
 /* ---------- Reset ---------- */
@@ -35,7 +35,7 @@ body{
   font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
   -webkit-font-smoothing:antialiased;
   background:var(--bg);
-  color:var(--brand); /* main text stays black/dark */
+  color:var(--brand);
   line-height:1.5;
   overflow-x:hidden;
 }
@@ -43,7 +43,7 @@ body{
 /* ---------- Utility Topbar (country, shipping message) ---------- */
 .topbar{
   background:#0a0a0a;
-  color:var(--bg); /* was white -> brand */
+  color:var(--bg);
   font-size:13px;
   display:flex;
   justify-content:space-between;
@@ -55,15 +55,15 @@ body{
 .topbar a{color:inherit;text-decoration:none;opacity:.9;font-weight:500}
 
 /* ---------- Header overall container ---------- */
-/* We'll split header into: masthead (logo + icons) and nav-bar (menu) */
 .header-outer{
   width:100%;
   position:relative;
   z-index:250;
-  /* visual backdrop */
   backdrop-filter: blur(6px) saturate(120%);
   background: linear-gradient(180deg, rgba(248,241,229,0.6), rgba(248,241,229,0.45));
   border-bottom:1px solid rgba(0,0,0,0.05);
+  /* allow smooth masthead transition */
+  transition:height .28s ease;
 }
 
 /* ---------- Masthead: centered logo + right icons ---------- */
@@ -73,9 +73,19 @@ body{
   padding:8px 20px;
   height:var(--masthead-height);
   display:grid;
-  grid-template-columns: 1fr auto 1fr; /* left / center / right */
+  grid-template-columns: 1fr auto 1fr;
   align-items:center;
   gap:12px;
+  transition:transform .36s ease, opacity .36s ease;
+  will-change:transform,opacity;
+  background:transparent;
+}
+
+/* animate hiding when scrolled */
+.masthead--hidden{
+  transform:translateY(-110%);
+  opacity:0;
+  pointer-events:none;
 }
 
 /* left column intentionally empty to visually center the logo */
@@ -98,7 +108,7 @@ body{
 
 /* logo sizing — large but doesn't increase masthead height due to layout */
 .brand img.logo {
-  max-height:80px;      /* desired logo size */
+  max-height:80px;
   height:80px;
   width:auto;
   display:block;
@@ -133,14 +143,38 @@ body{
 /* subtle hover */
 .icon-btn:hover{background:rgba(15,22,34,0.03)}
 
-/* ---------- Navigation Bar (sticky) ---------- */
+/* ---------- Navigation Bar ---------- */
+/* default state: part of flow; when pinned we'll make it fixed */
 .nav-bar{
-  position:sticky;
-  top:0; /* will stick to top when scrolled */
+  position:relative; /* not fixed until pinned */
   z-index:240;
-  background:var(--bg); /* solid background so it separates from content */
+  background:var(--bg);
   border-bottom:1px solid rgba(0,0,0,0.04);
   box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+  transition:box-shadow .22s, transform .22s;
+}
+
+/* pinned/fixed state when user scrolls past masthead */
+.nav-bar.pinned{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:999;
+  box-shadow: 0 10px 30px rgba(15,22,34,0.08);
+  border-bottom-color: rgba(0,0,0,0.06);
+  animation:navDrop .14s ease;
+}
+
+@keyframes navDrop {
+  from { transform: translateY(-6px); opacity:0.98 }
+  to { transform: translateY(0); opacity:1 }
+}
+
+/* Spacer to prevent content jump when nav becomes fixed */
+#navSpacer{
+  height:0;
+  transition:height .2s;
 }
 
 /* nav inner centers the menu items like luxury sites */
@@ -151,7 +185,7 @@ body{
   height:var(--nav-height);
   display:flex;
   align-items:center;
-  justify-content:center; /* center the nav links */
+  justify-content:center;
 }
 
 /* Primary nav */
@@ -185,6 +219,92 @@ body{
   padding-bottom:4px;
 }
 
+/* ---------- CTA Buttons (Option A - Minimal Luxury) ---------- */
+/* base button */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  font-family:Inter,system-ui,Arial;
+  font-weight:600;
+  font-size:15px;
+  padding:12px 20px;
+  border-radius:999px; /* pill */
+  border:1px solid rgba(255,255,255,0.28);
+  background:rgba(255,255,255,0.06);
+  color: #fff;
+  cursor:pointer;
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  text-transform:none;
+  letter-spacing:0.6px;
+  box-shadow: 0 6px 18px rgba(15,22,34,0.18);
+}
+
+/* hero-specific lighter look (when on hero image) */
+.hero-ctas .btn{
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.22);
+  color: #fff;
+  font-family:Playfair Display, serif;
+  font-weight:600;
+  letter-spacing:1px;
+}
+
+/* subtle hover */
+.btn:hover{ transform: translateY(-4px); box-shadow: 0 18px 40px rgba(15,22,34,0.18); }
+
+/* outline variant for secondary */
+.btn.outline{
+  background: transparent;
+  border:1px solid rgba(255,255,255,0.28);
+  color: #fff;
+  box-shadow:none;
+  padding:11px 18px;
+}
+
+/* small-screen adjustments for hero CTAs */
+.hero-ctas{ display:inline-flex; gap:12px; align-items:center; justify-content:center; }
+
+/* ---------- Featuring Pill (premium) ---------- */
+.feat-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 14px;
+  border-radius:999px;
+  font-family:Playfair Display, serif;
+  font-weight:600;
+  font-size:13px;
+  color:#fff;
+  background: linear-gradient(180deg, rgba(0,0,0,0.38), rgba(0,0,0,0.25));
+  border:1px solid rgba(184,154,120,0.12);
+  box-shadow: 0 10px 30px rgba(15,22,34,0.38);
+  transform: translateY(0);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+
+/* subtle hover lift for the pill */
+.feat-pill:hover{ transform: translateY(-4px); box-shadow: 0 22px 44px rgba(15,22,34,0.42); cursor:default; }
+
+/* place the pill nicer on hero: absolute layered */
+.hero-badge{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:48px;
+  pointer-events:auto;
+  z-index:40;
+}
+
+/* make it slightly transparent on mobile and smaller */
+@media (max-width:520px){
+  .feat-pill{ font-size:12px; padding:8px 10px; }
+  .hero-badge{ bottom:28px; }
+}
+
 /* ---------- Mobile tweaks for masthead + nav ---------- */
 @media (max-width:900px){
   .masthead{
@@ -198,6 +318,7 @@ body{
   .nav-inner{ padding:8px 14px; }
   .primary-nav{ gap:16px; font-size:13px; }
   .icon-btn{ height:34px; width:34px; padding:6px;}
+  .hero-title{ font-size:40px; }
 }
 
 /* ---------- Hero (full-bleed) ---------- */
@@ -206,10 +327,9 @@ body{
   width:100%;
   overflow:hidden;
   background:#eee;
+  min-height:520px;
 }
 
-/* use the uploaded screenshot as background (developer-provided file path) */
-/* The developer asked to include the uploaded screenshot path exactly as-is so it can be transformed to a URL by tooling. */
 .hero-visual{
   width:100%;
   height:78vh;
@@ -221,7 +341,7 @@ body{
   filter:brightness(0.98) saturate(0.95);
 }
 
-/* hero overlay area (centered content) */
+/* hero overlay area */
 .hero-overlay{
   position:absolute;
   inset:0;
@@ -236,7 +356,7 @@ body{
   pointer-events:auto;
   max-width:1100px;
   text-align:center;
-  color: white; /* KEEP hero text white */
+  color: white;
   text-shadow: 0 6px 30px rgba(0,0,0,0.45);
 }
 
@@ -245,7 +365,7 @@ body{
   letter-spacing:2px;
   text-transform:uppercase;
   margin-bottom:14px;
-  color:rgba(255,255,255,0.95); /* KEEP white */
+  color:rgba(255,255,255,0.95);
   opacity:.95;
   font-weight:600;
 }
@@ -259,22 +379,22 @@ body{
   margin:0 auto;
   max-width:860px;
   font-weight:700;
-  color: #fff; /* KEEP white */
+  color: #fff;
 }
 
 /* sub */
 .hero-sub{
   margin-top:14px;
-  color:rgba(255,255,255,0.92); /* KEEP white */
+  color:rgba(255,255,255,0.92);
   font-size:16px;
   max-width:640px;
   margin-left:auto;
   margin-right:auto;
 }
 
-/* ---------- Discover / Collections / Cards (unchanged visually) ---------- */
+/* ---------- Discover / Collections / Cards ---------- */
 .discover{
-  background:var(--bg); /* was white -> brand */
+  background:var(--bg);
   padding:44px 20px;
   display:flex;
   justify-content:center;
@@ -312,7 +432,7 @@ body{
 
 /* product card */
 .product-card{
-  background:var(--bg); /* was white -> brand */
+  background:var(--bg);
   border-radius:12px;
   overflow:hidden;
   padding:0;
@@ -381,18 +501,11 @@ body{
   font-size:14px;
 }
 
-/* ---------- Small screens responsive ---------- */
 @media (max-width:520px){
   .primary-nav{display:none}
   .hero-title{font-size:26px}
   .hero-sub{font-size:14px}
   .hero-ctas{flex-direction:column;gap:10px}
-}
-
-/* slight transition for nav when pinned */
-.nav-bar.is-scrolled{
-  box-shadow: 0 6px 20px rgba(15,22,34,0.08);
-  transition:box-shadow .22s;
 }
 </style>
 </head>
@@ -411,7 +524,7 @@ body{
     </div>
   </div>
 
-  <!-- Header: masthead (logo + icons) on top, nav-bar below (sticky) -->
+  <!-- Header: masthead (logo + icons) on top, nav-bar below (will pin after scroll) -->
   <header class="header-outer" role="banner" aria-label="Site header">
 
     <!-- MASTHEAD: centered logo, icons right -->
@@ -422,7 +535,6 @@ body{
 
       <div class="center-col">
         <div class="brand">
-          <!-- Your logo image (name+mark) centered. If you want the transparent PNG with wordmark, use that file. -->
           <img src="yerram_logo_name_trans.png" class="logo" alt="Yerram logo" onerror="this.style.display='none'">
         </div>
       </div>
@@ -452,7 +564,7 @@ body{
       </div>
     </div>
 
-    <!-- NAV BAR: sticky and centered links (this is the only part that will stick on scroll) -->
+    <!-- NAV BAR: will become fixed/pinned after scroll -->
     <nav class="nav-bar" role="navigation" aria-label="Primary navigation">
       <div class="nav-inner">
         <ul class="primary-nav" role="menubar" aria-label="Primary">
@@ -467,6 +579,9 @@ body{
         </ul>
       </div>
     </nav>
+
+    <!-- spacer so we can reserve space when nav becomes fixed -->
+    <div id="navSpacer" aria-hidden="true"></div>
   </header>
 
   <!-- HERO -->
@@ -483,8 +598,12 @@ body{
         <button class="btn outline" onclick="scrollToSection('collections')" style="margin-left:12px;">Shop Gifts for Him</button>
       </div>
 
-      <div class="hero-cta-row" aria-hidden="true" style="margin-top:18px;">
-        <div style="background:rgba(0,0,0,0.45);padding:6px 10px;border-radius:8px;font-weight:600;font-size:13px;color:#fff;">Featuring Eiza González</div>
+      <!-- upgraded featuring badge -->
+      <div class="hero-badge" aria-hidden="false">
+        <div class="feat-pill" role="note" aria-label="Featuring Eiza Gonzalez">
+          <span style="display:inline-block;font-size:12px;opacity:0.95;">Featuring</span>
+          <span style="display:inline-block;background:transparent;padding-left:6px;padding-right:6px;">Eiza González</span>
+        </div>
       </div>
     </div>
   </div>
@@ -549,7 +668,7 @@ body{
     {id:2,title:"Linea Hoop",price:95,image:"https://images.unsplash.com/photo-1519659528534-3a6e6f9b8b96?q=80"},
     {id:3,title:"Forge Cuff",price:220,image:"https://images.unsplash.com/photo-1530032584824-25b2a6d1464f?q=80"},
     {id:4,title:"Helix Pendant",price:140,image:"https://images.unsplash.com/photo-1520975919257-3f1b6b8d3b8b?q=80"},
-    {id:5,title:"Arc Band",price:120,image:"https://images.unsplash.com/photo-1541534401786-1bdcba3a0c0a?q=80"},
+    {id:5,title:"Arc Band",price:120,image:"https://images.unsplash.com/photo-1541534401786-1bdcba3a0c0b?q=80"},
     {id:6,title:"Loop Stud",price:85,image:"https://images.unsplash.com/photo-1520975919257-3f1b6b8d3b8b?q=80"},
   ];
 
@@ -620,14 +739,6 @@ body{
     renderCart();
   }
 
-  /* close drawer when clicking outside (optional) */
-  document.addEventListener('click', (e)=>{
-    const target = e.target;
-    if(!cartDrawer.contains(target) && !document.getElementById('openCartBtn').contains(target)){
-      // closeCart(); // disabled to avoid accidental closes — uncomment if desired
-    }
-  });
-
   /* ---------- Search modal ---------- */
   const modal = document.getElementById('modalBackdrop');
   document.getElementById('btnSearch').addEventListener('click', openSearch);
@@ -675,14 +786,36 @@ body{
   // year
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  /* ---------- Small JS enhancement: add class to nav when scrolled to show shadow ---------- */
+  /* ---------- Header / scroll behavior: pin nav after masthead ---------- */
   (function(){
     const navBar = document.querySelector('.nav-bar');
-    const hero = document.querySelector('.hero-wrap');
     const masthead = document.querySelector('.masthead');
+    const headerOuter = document.querySelector('.header-outer');
+    const navSpacer = document.getElementById('navSpacer');
 
-    function onScroll(){
-      // When the page is scrolled any amount, add subtle elevation to nav bar
+    // safe guards
+    if(!navBar) return;
+
+    function updatePinned(){
+      const mastBottom = masthead ? (masthead.getBoundingClientRect().bottom + window.scrollY) : 0;
+      // if we've scrolled beyond the bottom of the masthead, pin the nav
+      if(window.scrollY >= (mastBottom - 2)){
+        if(!navBar.classList.contains('pinned')){
+          navBar.classList.add('pinned');
+          // set spacer to nav height to avoid layout jump
+          navSpacer.style.height = navBar.offsetHeight + 'px';
+          // hide masthead smoothly
+          if(masthead) masthead.classList.add('masthead--hidden');
+        }
+      } else {
+        if(navBar.classList.contains('pinned')){
+          navBar.classList.remove('pinned');
+          navSpacer.style.height = '0px';
+          if(masthead) masthead.classList.remove('masthead--hidden');
+        }
+      }
+
+      // small elevation when page scroll is > 10 (keeps previous behavior but subtle)
       if(window.scrollY > 10){
         navBar.classList.add('is-scrolled');
       } else {
@@ -690,9 +823,10 @@ body{
       }
     }
 
-    window.addEventListener('scroll', onScroll, {passive:true});
-    // initialize
-    onScroll();
+    window.addEventListener('scroll', updatePinned, {passive:true});
+    window.addEventListener('resize', updatePinned);
+    // initialize on load
+    setTimeout(updatePinned,20);
   })();
   </script>
 
