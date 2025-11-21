@@ -62,8 +62,6 @@ body{
   backdrop-filter: blur(6px) saturate(120%);
   background: linear-gradient(180deg, rgba(248,241,229,0.6), rgba(248,241,229,0.45));
   border-bottom:1px solid rgba(0,0,0,0.05);
-  /* allow smooth masthead transition */
-  transition:height .28s ease;
 }
 
 /* ---------- Masthead: centered logo + right icons ---------- */
@@ -76,14 +74,16 @@ body{
   grid-template-columns: 1fr auto 1fr;
   align-items:center;
   gap:12px;
-  transition:transform .36s ease, opacity .36s ease;
+  /* controlled, subtle transition for the intentional slide up */
+  transition:transform .32s cubic-bezier(.2,.9,.2,1), opacity .28s ease;
   will-change:transform,opacity;
   background:transparent;
+  position:relative;
 }
 
-/* animate hiding when scrolled */
+/* animate hiding when scrolled (Option B: masthead hides with a clean slide) */
 .masthead--hidden{
-  transform:translateY(-110%);
+  transform: translateY(-100%); /* slide up exactly its height */
   opacity:0;
   pointer-events:none;
 }
@@ -146,12 +146,12 @@ body{
 /* ---------- Navigation Bar ---------- */
 /* default state: part of flow; when pinned we'll make it fixed */
 .nav-bar{
-  position:relative; /* not fixed until pinned */
+  position:relative; /* will switch to fixed when pinned */
   z-index:240;
   background:var(--bg);
   border-bottom:1px solid rgba(0,0,0,0.04);
   box-shadow: 0 1px 0 rgba(0,0,0,0.02);
-  transition:box-shadow .22s, transform .22s;
+  transition:box-shadow .18s ease;
 }
 
 /* pinned/fixed state when user scrolls past masthead */
@@ -163,18 +163,18 @@ body{
   z-index:999;
   box-shadow: 0 10px 30px rgba(15,22,34,0.08);
   border-bottom-color: rgba(0,0,0,0.06);
-  animation:navDrop .14s ease;
+  /* no large translate/opacity animation — keep it subtle and stable */
 }
 
-@keyframes navDrop {
-  from { transform: translateY(-6px); opacity:0.98 }
-  to { transform: translateY(0); opacity:1 }
+/* Small class to add a tiny elevation when slightly scrolled */
+.nav-bar.is-scrolled{
+  box-shadow: 0 8px 22px rgba(15,22,34,0.06);
 }
 
 /* Spacer to prevent content jump when nav becomes fixed */
 #navSpacer{
   height:0;
-  transition:height .2s;
+  transition:height .18s ease;
 }
 
 /* nav inner centers the menu items like luxury sites */
@@ -786,47 +786,73 @@ body{
   // year
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  /* ---------- Header / scroll behavior: pin nav after masthead ---------- */
+  /* ---------- Header / scroll behavior: pin nav after masthead (Option B) ---------- */
   (function(){
     const navBar = document.querySelector('.nav-bar');
     const masthead = document.querySelector('.masthead');
-    const headerOuter = document.querySelector('.header-outer');
     const navSpacer = document.getElementById('navSpacer');
 
-    // safe guards
     if(!navBar) return;
 
-    function updatePinned(){
-      const mastBottom = masthead ? (masthead.getBoundingClientRect().bottom + window.scrollY) : 0;
-      // if we've scrolled beyond the bottom of the masthead, pin the nav
-      if(window.scrollY >= (mastBottom - 2)){
-        if(!navBar.classList.contains('pinned')){
-          navBar.classList.add('pinned');
-          // set spacer to nav height to avoid layout jump
-          navSpacer.style.height = navBar.offsetHeight + 'px';
-          // hide masthead smoothly
-          if(masthead) masthead.classList.add('masthead--hidden');
-        }
-      } else {
-        if(navBar.classList.contains('pinned')){
-          navBar.classList.remove('pinned');
-          navSpacer.style.height = '0px';
-          if(masthead) masthead.classList.remove('masthead--hidden');
-        }
-      }
+    // Use rAF-throttled scroll handler for smoothness
+    let ticking = false;
 
-      // small elevation when page scroll is > 10 (keeps previous behavior but subtle)
-      if(window.scrollY > 10){
-        navBar.classList.add('is-scrolled');
+    // compute stable threshold: bottom of masthead relative to page
+    function getThreshold(){
+      if(!masthead) return 0;
+      // masthead.offsetTop + masthead.offsetHeight gives the Y coordinate where masthead ends
+      return masthead.offsetTop + masthead.offsetHeight;
+    }
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        const threshold = getThreshold();
+        const scrolled = window.scrollY || window.pageYOffset;
+
+        // If we've scrolled past the masthead bottom, pin the nav and hide the masthead
+        if (scrolled >= threshold) {
+          if (!navBar.classList.contains('pinned')) {
+            navBar.classList.add('pinned');
+            // set spacer to nav height to avoid layout jump
+            navSpacer.style.height = navBar.offsetHeight + 'px';
+            if (masthead) masthead.classList.add('masthead--hidden');
+          }
+        } else {
+          if (navBar.classList.contains('pinned')) {
+            navBar.classList.remove('pinned');
+            navSpacer.style.height = '0px';
+            if (masthead) masthead.classList.remove('masthead--hidden');
+          }
+        }
+
+        // small elevation when page scroll is > 10 (keeps previous subtle elevation)
+        if (scrolled > 10) {
+          navBar.classList.add('is-scrolled');
+        } else {
+          navBar.classList.remove('is-scrolled');
+        }
+
+        ticking = false;
+      });
+    }
+
+    // update spacer on resize (nav height may change)
+    function onResize() {
+      if (navBar.classList.contains('pinned')) {
+        navSpacer.style.height = navBar.offsetHeight + 'px';
       } else {
-        navBar.classList.remove('is-scrolled');
+        navSpacer.style.height = '0px';
       }
     }
 
-    window.addEventListener('scroll', updatePinned, {passive:true});
-    window.addEventListener('resize', updatePinned);
-    // initialize on load
-    setTimeout(updatePinned,20);
+    window.addEventListener('scroll', onScroll, {passive:true});
+    window.addEventListener('resize', onResize);
+    // init state
+    onResize();
+    // call once to check initial position (in case the page loads scrolled)
+    onScroll();
   })();
   </script>
 
