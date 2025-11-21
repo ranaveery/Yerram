@@ -22,6 +22,7 @@
   --radius:16px;
   --max-content-width:1200px;
 
+  /* header heights (defaults) */
   --topbar-height:32px;
   --masthead-height:70px;
   --nav-height:56px;
@@ -39,7 +40,7 @@ body{
   overflow-x:hidden;
 }
 
-/* ---------- Utility Topbar ---------- */
+/* ---------- Utility Topbar (country, shipping message) ---------- */
 .topbar{
   background:#0a0a0a;
   color:var(--bg);
@@ -53,7 +54,7 @@ body{
 .topbar .left, .topbar .right{display:flex;align-items:center;gap:14px}
 .topbar a{color:inherit;text-decoration:none;opacity:.9;font-weight:500}
 
-/* ---------- Header ---------- */
+/* ---------- Header overall container ---------- */
 .header-outer{
   width:100%;
   position:relative;
@@ -61,9 +62,11 @@ body{
   backdrop-filter: blur(6px) saturate(120%);
   background: linear-gradient(180deg, rgba(248,241,229,0.6), rgba(248,241,229,0.45));
   border-bottom:1px solid rgba(0,0,0,0.05);
+  /* allow smooth masthead transition */
+  transition:height .28s ease;
 }
 
-/* Masthead */
+/* ---------- Masthead: centered logo + right icons ---------- */
 .masthead{
   max-width:var(--max-content-width);
   margin:0 auto;
@@ -73,19 +76,37 @@ body{
   grid-template-columns: 1fr auto 1fr;
   align-items:center;
   gap:12px;
+  transition:transform .36s ease, opacity .36s ease;
+  will-change:transform,opacity;
+  background:transparent;
 }
+
+/* animate hiding when scrolled */
+.masthead--hidden{
+  transform:translateY(-110%);
+  opacity:0;
+  pointer-events:none;
+}
+
+/* left column intentionally empty to visually center the logo */
 .masthead .left-col{}
+
+/* center column holds the logo centered */
 .masthead .center-col{
   display:flex;
   justify-content:center;
   align-items:center;
 }
+
+/* right column contains the icon cluster and aligns right */
 .masthead .right-col{
   display:flex;
   justify-content:flex-end;
   align-items:center;
   gap:12px;
 }
+
+/* logo sizing — large but doesn't increase masthead height due to layout */
 .brand img.logo {
   max-height:80px;
   height:80px;
@@ -94,14 +115,18 @@ body{
   object-fit:contain;
   line-height:0;
 }
+
+/* optional brand text (hidden by default since logo includes name) */
 .brand h1{display:none}
 
-/* Icons */
+/* ---------- Icon cluster (search/account/wishlist/cart) ---------- */
 .icon-cluster{
   display:flex;
   gap:12px;
   align-items:center;
 }
+
+/* small icon button */
 .icon-btn{
   background:transparent;
   border:none;
@@ -114,21 +139,45 @@ body{
   height:32px;
   width:32px;
 }
+
+/* subtle hover */
 .icon-btn:hover{background:rgba(15,22,34,0.03)}
 
 /* ---------- Navigation Bar ---------- */
+/* default state: part of flow; when pinned we'll make it fixed */
 .nav-bar{
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  backdrop-filter: blur(10px);
-  background: rgba(255,255,255,0.8);
-  transition: box-shadow 0.3s ease;
+  position:relative; /* not fixed until pinned */
+  z-index:240;
+  background:var(--bg);
   border-bottom:1px solid rgba(0,0,0,0.04);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+  transition:box-shadow .22s, transform .22s;
 }
-.nav-bar.stuck{
-  box-shadow:0 4px 18px rgba(0,0,0,0.12);
+
+/* pinned/fixed state when user scrolls past masthead */
+.nav-bar.pinned{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:999;
+  box-shadow: 0 10px 30px rgba(15,22,34,0.08);
+  border-bottom-color: rgba(0,0,0,0.06);
+  animation:navDrop .14s ease;
 }
+
+@keyframes navDrop {
+  from { transform: translateY(-6px); opacity:0.98 }
+  to { transform: translateY(0); opacity:1 }
+}
+
+/* Spacer to prevent content jump when nav becomes fixed */
+#navSpacer{
+  height:0;
+  transition:height .2s;
+}
+
+/* nav inner centers the menu items like luxury sites */
 .nav-inner{
   max-width:var(--max-content-width);
   margin:0 auto;
@@ -138,6 +187,8 @@ body{
   align-items:center;
   justify-content:center;
 }
+
+/* Primary nav */
 .primary-nav{
   display:flex;
   gap:28px;
@@ -150,6 +201,7 @@ body{
   font-weight:600;
   letter-spacing:1px;
 }
+
 .primary-nav a{
   text-decoration:none;
   color:var(--brand);
@@ -158,6 +210,8 @@ body{
   opacity:.95;
   padding:6px 4px;
 }
+
+/* subtle separator under active/hover */
 .primary-nav a:hover{
   opacity:1;
   text-decoration:none;
@@ -165,13 +219,117 @@ body{
   padding-bottom:4px;
 }
 
-/* ---------- Hero ---------- */
+/* ---------- CTA Buttons (Option A - Minimal Luxury) ---------- */
+/* base button */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  font-family:Inter,system-ui,Arial;
+  font-weight:600;
+  font-size:15px;
+  padding:12px 20px;
+  border-radius:999px; /* pill */
+  border:1px solid rgba(255,255,255,0.28);
+  background:rgba(255,255,255,0.06);
+  color: #fff;
+  cursor:pointer;
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  text-transform:none;
+  letter-spacing:0.6px;
+  box-shadow: 0 6px 18px rgba(15,22,34,0.18);
+}
+
+/* hero-specific lighter look (when on hero image) */
+.hero-ctas .btn{
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.22);
+  color: #fff;
+  font-family:Playfair Display, serif;
+  font-weight:600;
+  letter-spacing:1px;
+}
+
+/* subtle hover */
+.btn:hover{ transform: translateY(-4px); box-shadow: 0 18px 40px rgba(15,22,34,0.18); }
+
+/* outline variant for secondary */
+.btn.outline{
+  background: transparent;
+  border:1px solid rgba(255,255,255,0.28);
+  color: #fff;
+  box-shadow:none;
+  padding:11px 18px;
+}
+
+/* small-screen adjustments for hero CTAs */
+.hero-ctas{ display:inline-flex; gap:12px; align-items:center; justify-content:center; }
+
+/* ---------- Featuring Pill (premium) ---------- */
+.feat-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 14px;
+  border-radius:999px;
+  font-family:Playfair Display, serif;
+  font-weight:600;
+  font-size:13px;
+  color:#fff;
+  background: linear-gradient(180deg, rgba(0,0,0,0.38), rgba(0,0,0,0.25));
+  border:1px solid rgba(184,154,120,0.12);
+  box-shadow: 0 10px 30px rgba(15,22,34,0.38);
+  transform: translateY(0);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+
+/* subtle hover lift for the pill */
+.feat-pill:hover{ transform: translateY(-4px); box-shadow: 0 22px 44px rgba(15,22,34,0.42); cursor:default; }
+
+/* place the pill nicer on hero: absolute layered */
+.hero-badge{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:48px;
+  pointer-events:auto;
+  z-index:40;
+}
+
+/* make it slightly transparent on mobile and smaller */
+@media (max-width:520px){
+  .feat-pill{ font-size:12px; padding:8px 10px; }
+  .hero-badge{ bottom:28px; }
+}
+
+/* ---------- Mobile tweaks for masthead + nav ---------- */
+@media (max-width:900px){
+  .masthead{
+    grid-template-columns: auto 1fr auto;
+    padding:8px 14px;
+    height:auto;
+  }
+  .masthead .left-col{ display:flex; align-items:center; gap:8px; }
+  .masthead .center-col{ justify-content:flex-start; padding-left:12px; }
+  .brand img.logo{ max-height:80px; height:80px; }
+  .nav-inner{ padding:8px 14px; }
+  .primary-nav{ gap:16px; font-size:13px; }
+  .icon-btn{ height:34px; width:34px; padding:6px;}
+  .hero-title{ font-size:40px; }
+}
+
+/* ---------- Hero (full-bleed) ---------- */
 .hero-wrap{
   position:relative;
   width:100%;
   overflow:hidden;
   background:#eee;
+  min-height:520px;
 }
+
 .hero-visual{
   width:100%;
   height:78vh;
@@ -182,6 +340,8 @@ body{
   object-position:center;
   filter:brightness(0.98) saturate(0.95);
 }
+
+/* hero overlay area */
 .hero-overlay{
   position:absolute;
   inset:0;
@@ -191,13 +351,15 @@ body{
   padding:32px;
   pointer-events:none;
 }
+
 .hero-content{
   pointer-events:auto;
   max-width:1100px;
   text-align:center;
-  color:white;
-  text-shadow:0 6px 30px rgba(0,0,0,0.45);
+  color: white;
+  text-shadow: 0 6px 30px rgba(0,0,0,0.45);
 }
+
 .hero-kicker{
   font-size:13px;
   letter-spacing:2px;
@@ -207,6 +369,8 @@ body{
   opacity:.95;
   font-weight:600;
 }
+
+/* main headline similar to reference */
 .hero-title{
   font-family:Playfair Display,serif;
   font-size:56px;
@@ -215,8 +379,10 @@ body{
   margin:0 auto;
   max-width:860px;
   font-weight:700;
-  color:#fff;
+  color: #fff;
 }
+
+/* sub */
 .hero-sub{
   margin-top:14px;
   color:rgba(255,255,255,0.92);
@@ -225,48 +391,8 @@ body{
   margin-left:auto;
   margin-right:auto;
 }
-.hero-ctas{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  margin-top:20px;
-}
 
-/* ---------- CTA Pill Buttons ---------- */
-.cta-pill{
-  display:inline-block;
-  padding:14px 32px;
-  font-size:16px;
-  letter-spacing:0.5px;
-  border-radius:60px;
-  border:1px solid rgba(204,178,120,0.45);
-  backdrop-filter:blur(12px);
-  background:rgba(255,255,255,0.45);
-  transition: background 0.3s ease, transform 0.25s ease, box-shadow 0.25s ease;
-  cursor:pointer;
-}
-.cta-pill:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 22px rgba(0,0,0,0.18);
-  background:rgba(255,255,255,0.6);
-}
-
-/* ---------- Eiza González pill ---------- */
-.eiza-pill{
-  display:inline-block;
-  padding:10px 26px;
-  font-size:14px;
-  font-family:"Cormorant Garamond", serif;
-  letter-spacing:1px;
-  border-radius:50px;
-  border:1px solid rgba(204,178,120,0.5);
-  background:rgba(255,255,255,0.4);
-  backdrop-filter:blur(8px);
-  margin-bottom:18px;
-  text-transform:uppercase;
-}
-
-/* ---------- Discover / Sections ---------- */
+/* ---------- Discover / Collections / Cards ---------- */
 .discover{
   background:var(--bg);
   padding:44px 20px;
@@ -274,6 +400,7 @@ body{
   justify-content:center;
   border-top:1px solid rgba(0,0,0,0.03);
 }
+
 .discover-inner{
   width:100%;
   max-width:var(--max-content-width);
@@ -282,11 +409,13 @@ body{
   font-size:20px;
   letter-spacing:.6px;
 }
+
 .section{
   max-width:var(--max-content-width);
   margin:0 auto;
   padding:64px 20px;
 }
+
 .section h2{
   font-family:Playfair Display,serif;
   font-size:32px;
@@ -294,12 +423,14 @@ body{
   text-align:center;
 }
 
-/* ---------- Product grid ---------- */
+/* product grid */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
   gap:28px;
 }
+
+/* product card */
 .product-card{
   background:var(--bg);
   border-radius:12px;
@@ -308,23 +439,27 @@ body{
   border:1px solid rgba(0,0,0,0.04);
   transition:transform .22s, box-shadow .22s;
 }
+
 .product-card:hover{
   transform:translateY(-6px);
   box-shadow:0 12px 40px rgba(15,22,34,0.06);
 }
+
 .product-thumb{
   width:100%;
   height:320px;
   object-fit:cover;
   display:block;
 }
+
 .product-body{
   padding:16px;
 }
+
 .product-title{font-weight:600;margin-bottom:8px}
 .product-price{font-weight:700;margin-bottom:12px}
 
-/* Cart drawer / Search Modal / Footer */
+/* cart drawer, search modal, footer kept as-is but with brand bg */
 .cart-drawer{
   position:fixed;
   right:0; top:0;
@@ -339,6 +474,7 @@ body{
   padding:28px;
 }
 .cart-drawer.open{transform:translateX(0)}
+
 .modal-backdrop{
   position:fixed;
   inset:0;
@@ -349,6 +485,7 @@ body{
   justify-content:center;
 }
 .modal-backdrop.open{display:flex}
+
 .search-modal{
   width:100%;
   max-width:820px;
@@ -356,6 +493,7 @@ body{
   border-radius:10px;
   padding:20px;
 }
+
 .footer{
   padding:40px 20px;
   text-align:center;
@@ -363,20 +501,6 @@ body{
   font-size:14px;
 }
 
-/* ---------- Responsive ---------- */
-@media (max-width:900px){
-  .masthead{
-    grid-template-columns:auto 1fr auto;
-    padding:8px 14px;
-    height:auto;
-  }
-  .masthead .left-col{ display:flex; align-items:center; gap:8px; }
-  .masthead .center-col{ justify-content:flex-start; padding-left:12px; }
-  .brand img.logo{ max-height:80px; height:80px; }
-  .nav-inner{ padding:8px 14px; }
-  .primary-nav{ gap:16px; font-size:13px; }
-  .icon-btn{ height:34px; width:34px; padding:6px;}
-}
 @media (max-width:520px){
   .primary-nav{display:none}
   .hero-title{font-size:26px}
@@ -388,62 +512,79 @@ body{
 
 <body>
 
-<!-- Topbar -->
-<div class="topbar" aria-hidden="false">
-  <div class="left">
-    <span style="opacity:.9;">🌐 USA</span>
-    <a href="#" aria-label="Store locator">Store Locator</a>
+  <!-- Top utility bar -->
+  <div class="topbar" aria-hidden="false">
+    <div class="left">
+      <span style="opacity:.9;">🌐 USA</span>
+      <a href="#" aria-label="Store locator">Store Locator</a>
+    </div>
+    <div class="right">
+      <span>Complimentary overnight shipping &amp; gift packaging on all orders</span>
+      <a href="#" aria-label="Previous message" style="opacity:.7;margin-left:8px;">›</a>
+    </div>
   </div>
-  <div class="right">
-    <span>Complimentary overnight shipping &amp; gift packaging on all orders</span>
-    <a href="#" aria-label="Previous message" style="opacity:.7;margin-left:8px;">›</a>
-  </div>
-</div>
 
-<!-- Header -->
-<header class="header-outer" role="banner" aria-label="Site header">
-  <div class="masthead" role="region" aria-label="Brand masthead">
-    <div class="left-col"></div>
-    <div class="center-col">
-      <div class="brand">
-        <img src="yerram_logo_name_trans.png" class="logo" alt="Yerram logo" onerror="this.style.display='none'">
+  <!-- Header: masthead (logo + icons) on top, nav-bar below (will pin after scroll) -->
+  <header class="header-outer" role="banner" aria-label="Site header">
+
+    <!-- MASTHEAD: centered logo, icons right -->
+    <div class="masthead" role="region" aria-label="Brand masthead">
+      <div class="left-col" aria-hidden="true">
+        <!-- Intentionally left blank to center the logo visually -->
+      </div>
+
+      <div class="center-col">
+        <div class="brand">
+          <img src="yerram_logo_name_trans.png" class="logo" alt="Yerram logo" onerror="this.style.display='none'">
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="icon-cluster" aria-hidden="false">
+          <!-- search -->
+          <button class="icon-btn" id="btnSearch" aria-label="Search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M21 21l-4.35-4.35" stroke="#0f1622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="6" stroke="#0f1622" stroke-width="2" fill="none"/></svg>
+          </button>
+
+          <!-- favorites -->
+          <button class="icon-btn" aria-label="Favorites" onclick="alert('Favorites — placeholder')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M20.8 4.6a4.5 4.5 0 0 0-6.4 0L12 7l-2.4-2.4a4.5 4.5 0 0 0-6.4 6.4L12 21l8.8-9.9a4.5 4.5 0 0 0 0-6.5z" stroke="#0f1622" stroke-width="1.2" fill="none"/></svg>
+          </button>
+
+          <!-- account -->
+          <button class="icon-btn" aria-label="Account" onclick="alert('Account action — implement auth flow')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="#0f1622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="#0f1622" stroke-width="2" fill="none"/></svg>
+          </button>
+
+          <!-- cart -->
+          <button class="icon-btn" id="openCartBtn" aria-label="Open cart">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M6 6h15l-1.5 9h-11L6 6z" stroke="#0f1622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20" r="1" fill="#0f1622"/><circle cx="18" cy="20" r="1" fill="#0f1622"/></svg>
+          </button>
+        </div>
       </div>
     </div>
-    <div class="right-col">
-      <div class="icon-cluster" aria-hidden="false">
-        <button class="icon-btn" id="btnSearch" aria-label="Search">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M21 21l-4.35-4.35" stroke="#0f1622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="6" stroke="#0f1622" stroke-width="2" fill="none"/></svg>
-        </button>
-        <button class="icon-btn" aria-label="Favorites" onclick="alert('Favorites — placeholder')">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M20.8 4.6a4.5 4.5 0 0 0-6.4 0L12 7l-2.4-2.4a4.5 4.5 0 0 0-6.4 6.4L12 21l8.8-9.9a4.5 4.5 0 0 0 0-6.5z" stroke="#0f1622" stroke-width="1.2" fill="none"/></svg>
-        </button>
-        <button class="icon-btn" aria-label="Account" onclick="alert('Account action — implement auth flow')">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="#0f1622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="#0f1622" stroke-width="2" fill="none"/></svg>
-        </button>
-        <button class="icon-btn" id="openCartBtn" aria-label="Open cart">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M6 6h15l-1.5 9h-11L6 6z" stroke="#0f1622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20" r="1" fill="#0f1622"/><circle cx="18" cy="20" r="1" fill="#0f1622"/></svg>
-        </button>
+
+    <!-- NAV BAR: will become fixed/pinned after scroll -->
+    <nav class="nav-bar" role="navigation" aria-label="Primary navigation">
+      <div class="nav-inner">
+        <ul class="primary-nav" role="menubar" aria-label="Primary">
+          <li role="none"><a role="menuitem" href="#womens">WOMEN</a></li>
+          <li role="none"><a role="menuitem" href="#mens">MEN</a></li>
+          <li role="none"><a role="menuitem" href="#home">GIFTS</a></li>
+          <li role="none"><a role="menuitem" href="#jewelry">JEWELRY</a></li>
+          <li role="none"><a role="menuitem" href="#fragrance">WATCHES</a></li>
+          <li role="none"><a role="menuitem" href="#gifts">LIMITED EDITION</a></li>
+          <li role="none"><a role="menuitem" href="#special">SERVICES</a></li>
+          <li role="none"><a role="menuitem" href="#about">ABOUT YERRAM</a></li>
+        </ul>
       </div>
-    </div>
-  </div>
+    </nav>
 
-  <nav class="nav-bar" role="navigation" aria-label="Primary navigation">
-    <div class="nav-inner">
-      <ul class="primary-nav" role="menubar" aria-label="Primary">
-        <li role="none"><a role="menuitem" href="#womens">WOMEN</a></li>
-        <li role="none"><a role="menuitem" href="#mens">MEN</a></li>
-        <li role="none"><a role="menuitem" href="#home">GIFTS</a></li>
-        <li role="none"><a role="menuitem" href="#jewelry">JEWELRY</a></li>
-        <li role="none"><a role="menuitem" href="#fragrance">WATCHES</a></li>
-        <li role="none"><a role="menuitem" href="#gifts">LIMITED EDITION</a></li>
-        <li role="none"><a role="menuitem" href="#special">SERVICES</a></li>
-        <li role="none"><a role="menuitem" href="#about">ABOUT YERRAM</a></li>
-      </ul>
-    </div>
-  </nav>
-</header>
+    <!-- spacer so we can reserve space when nav becomes fixed -->
+    <div id="navSpacer" aria-hidden="true"></div>
+  </header>
 
-<!-- HERO -->
+  <!-- HERO -->
 <section class="hero-wrap" aria-label="Hero">
   <img class="hero-visual" src="main_background.png" alt="Hero background">
   <div class="hero-overlay" role="presentation">
@@ -452,75 +593,242 @@ body{
       <h1 class="hero-title">Extraordinary memories</h1>
       <p class="hero-sub">Modern heirlooms crafted with precision — quiet, considered, and built to outlast trends.</p>
 
-      <div class="hero-ctas" role="group" aria-label="Hero calls to action">
-        <a class="cta-pill" href="#">Shop gifts for her</a>
-        <a class="cta-pill" href="#">Shop gifts for him</a>
+      <div class="hero-ctas" role="group" aria-label="Hero calls to action" style="margin-top:20px;">
+        <button class="btn" onclick="scrollToSection('collections')">Shop Gifts for Her</button>
+        <button class="btn outline" onclick="scrollToSection('collections')" style="margin-left:12px;">Shop Gifts for Him</button>
       </div>
 
-      <div class="hero-cta-row" aria-hidden="true">
-        <div class="eiza-pill">Featuring Eiza González</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Discover -->
-<div class="discover" aria-hidden="false">
-  <div class="discover-inner">
-    DISCOVER OUR MOST LOVED STYLES
-  </div>
-</div>
-
-<!-- Collections -->
-<section id="collections" class="section" aria-labelledby="collections-title">
-  <h2 id="collections-title">Collections</h2>
-  <div class="grid" id="product-grid">
-    <div class="product-card">
-      <img src="product1.png" class="product-thumb" alt="Product 1">
-      <div class="product-body">
-        <div class="product-title">Gold Chain Necklace</div>
-        <div class="product-price">$1,250</div>
-      </div>
-    </div>
-    <div class="product-card">
-      <img src="product2.png" class="product-thumb" alt="Product 2">
-      <div class="product-body">
-        <div class="product-title">Diamond Stud Earrings</div>
-        <div class="product-price">$3,400</div>
-      </div>
-    </div>
-    <div class="product-card">
-      <img src="product3.png" class="product-thumb" alt="Product 3">
-      <div class="product-body">
-        <div class="product-title">Classic Wristwatch</div>
-        <div class="product-price">$2,980</div>
+      <!-- upgraded featuring badge -->
+      <div class="hero-badge" aria-hidden="false">
+        <div class="feat-pill" role="note" aria-label="Featuring Eiza Gonzalez">
+          <span style="display:inline-block;font-size:12px;opacity:0.95;">Featuring</span>
+          <span style="display:inline-block;background:transparent;padding-left:6px;padding-right:6px;">Eiza González</span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Footer -->
-<footer class="footer">
-  &copy; 2025 Yerram. Crafted to outlast you. All rights reserved.
-</footer>
 
-<!-- JS: Scroll Shadow & Cart -->
-<script>
-document.addEventListener("scroll", () => {
-  const nav = document.querySelector(".nav-bar");
-  const mastheadHeight = document.querySelector(".masthead").offsetHeight;
+  <!-- discover band (brand color) -->
+  <div class="discover" aria-hidden="false">
+    <div class="discover-inner">
+      DISCOVER OUR MOST LOVED STYLES
+    </div>
+  </div>
 
-  if (window.scrollY > mastheadHeight - 10) {
-    nav.classList.add("stuck");
-  } else {
-    nav.classList.remove("stuck");
+  <!-- Collections -->
+  <section id="collections" class="section" aria-labelledby="collections-title">
+    <h2 id="collections-title">Collections</h2>
+
+    <div class="grid" id="product-grid">
+      <!-- JS will render product cards here -->
+    </div>
+  </section>
+
+  <!-- About & Contact -->
+  <section id="about" class="section" style="padding-top:36px;padding-bottom:36px;">
+    <h2 style="text-align:center;margin-bottom:18px;font-size:26px;">About</h2>
+    <p style="max-width:880px;margin:0 auto;color:var(--muted);text-align:center;">
+      Yerram blends luxury minimalism with technology-grade precision. Clean forms, considered materials, and craft that endures.
+    </p>
+  </section>
+
+  <section id="contact" class="section" style="padding-top:24px;padding-bottom:60px;">
+    <h2 style="text-align:center;margin-bottom:18px;font-size:26px;">Contact</h2>
+    <p style="max-width:880px;margin:0 auto;color:var(--muted);text-align:center;">
+      Need help with sizing or care? Email <a href="mailto:care@yerram.example">care@yerram.example</a>
+    </p>
+  </section>
+
+  <!-- Cart Drawer -->
+  <aside id="cartDrawer" class="cart-drawer" aria-hidden="true"></aside>
+
+  <!-- Search Modal -->
+  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="search-modal" role="document">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+        <input id="searchInput" type="search" placeholder="Search Yerram" style="flex:1;padding:12px;border-radius:8px;border:1px solid rgba(0,0,0,0.08);font-size:16px;">
+        <button class="btn" onclick="doSearch()">Search</button>
+        <button class="icon-btn" onclick="closeSearch()" aria-label="Close search" style="margin-left:6px;">✕</button>
+      </div>
+      <div id="searchResults" style="min-height:120px;color:var(--muted)">Search results will appear here (demo).</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    © <span id="year"></span> Yerram — All rights reserved.
+  </footer>
+
+  <script>
+  /* ---------- Sample products ---------- */
+  const products = [
+    {id:1,title:"Atlas Signet",price:185,image:"https://images.unsplash.com/photo-1549921296-3d9a1b0f2c6f?q=80"},
+    {id:2,title:"Linea Hoop",price:95,image:"https://images.unsplash.com/photo-1519659528534-3a6e6f9b8b96?q=80"},
+    {id:3,title:"Forge Cuff",price:220,image:"https://images.unsplash.com/photo-1530032584824-25b2a6d1464f?q=80"},
+    {id:4,title:"Helix Pendant",price:140,image:"https://images.unsplash.com/photo-1520975919257-3f1b6b8d3b8b?q=80"},
+    {id:5,title:"Arc Band",price:120,image:"https://images.unsplash.com/photo-1541534401786-1bdcba3a0c0b?q=80"},
+    {id:6,title:"Loop Stud",price:85,image:"https://images.unsplash.com/photo-1520975919257-3f1b6b8d3b8b?q=80"},
+  ];
+
+  const grid = document.getElementById("product-grid");
+  products.forEach(p=>{
+    const card = document.createElement("article");
+    card.className = "product-card";
+    card.innerHTML = `
+      <img class="product-thumb" src="${p.image}" alt="${p.title}">
+      <div class="product-body">
+        <div class="product-title">${p.title}</div>
+        <div class="product-price">$${p.price}</div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn" onclick="addToCart(${p.id})">Add to bag</button>
+          <button class="btn outline" onclick="toggleFavorite(${p.id})" aria-label="Favorite ${p.title}">♡</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  /* ---------- Cart / Drawer ---------- */
+  const cartDrawer = document.getElementById("cartDrawer");
+  let cart = [];
+
+  document.getElementById("openCartBtn").addEventListener("click", openCart);
+
+  function openCart(){
+    renderCart();
+    cartDrawer.classList.add("open");
+    cartDrawer.setAttribute('aria-hidden','false');
   }
-});
+  function closeCart(){ cartDrawer.classList.remove("open"); cartDrawer.setAttribute('aria-hidden','true'); }
 
-// Cart Drawer
-const cartBtn = document.getElementById("openCartBtn");
-cartBtn?.addEventListener("click",()=>document.querySelector(".cart-drawer")?.classList.toggle("open"));
-</script>
+  function addToCart(id){
+    const p = products.find(x=>x.id===id);
+    cart.push(p);
+    openCart();
+  }
+
+  function renderCart(){
+    let html = '<h2 style="font-family:Playfair Display;margin-bottom:16px;">Your Bag</h2>';
+    if(cart.length === 0){
+      html += '<p>Your bag is empty.</p>';
+      html += '<div style="margin-top:20px;"><button class="btn" onclick="closeCart()">Continue shopping</button></div>';
+    } else {
+      let total = 0;
+      cart.forEach((it, idx)=>{
+        total += it.price;
+        html += `<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid rgba(0,0,0,.05)">
+          <div>
+            <div style="font-weight:700">${it.title}</div>
+            <div style="color:var(--muted);font-size:13px">$${it.price}</div>
+          </div>
+          <div>
+            <button class="btn outline" onclick="removeFromCart(${idx})">Remove</button>
+          </div>
+        </div>`;
+      });
+      html += `<div style="margin-top:18px;font-weight:700;display:flex;justify-content:space-between"><div>Total</div><div>$${total}</div></div>`;
+      html += '<div style="margin-top:18px"><button class="btn">Checkout</button><button class="btn outline" style="margin-left:10px" onclick="closeCart()">Continue shopping</button></div>';
+    }
+    cartDrawer.innerHTML = html;
+  }
+
+  function removeFromCart(index){
+    cart.splice(index,1);
+    renderCart();
+  }
+
+  /* ---------- Search modal ---------- */
+  const modal = document.getElementById('modalBackdrop');
+  document.getElementById('btnSearch').addEventListener('click', openSearch);
+
+  function openSearch(){
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    document.getElementById('searchInput').focus();
+  }
+  function closeSearch(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    document.getElementById('searchInput').value = '';
+    document.getElementById('searchResults').innerHTML = '';
+  }
+
+  function doSearch(){
+    const q = document.getElementById('searchInput').value.trim().toLowerCase();
+    const results = products.filter(p => p.title.toLowerCase().includes(q));
+    const el = document.getElementById('searchResults');
+    if(!q){ el.innerHTML = '<div style="color:var(--muted)">Type to search our collections</div>'; return; }
+    if(results.length === 0){
+      el.innerHTML = '<div style="color:var(--muted)">No results found</div>';
+      return;
+    }
+    el.innerHTML = results.map(r=>`<div style="padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.04)"><strong>${r.title}</strong> — $${r.price}</div>`).join('');
+  }
+
+  // close modal on backdrop click
+  modal.addEventListener('click', (e)=>{
+    if(e.target === modal) closeSearch();
+  });
+
+  /* ---------- Favorites placeholder ---------- */
+  function toggleFavorite(id){
+    alert('Favorited (demo)');
+  }
+
+  /* ---------- Helpers ---------- */
+  function scrollToSection(id){
+    const el = document.getElementById(id);
+    if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  // year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* ---------- Header / scroll behavior: pin nav after masthead ---------- */
+  (function(){
+    const navBar = document.querySelector('.nav-bar');
+    const masthead = document.querySelector('.masthead');
+    const headerOuter = document.querySelector('.header-outer');
+    const navSpacer = document.getElementById('navSpacer');
+
+    // safe guards
+    if(!navBar) return;
+
+    function updatePinned(){
+      const mastBottom = masthead ? (masthead.getBoundingClientRect().bottom + window.scrollY) : 0;
+      // if we've scrolled beyond the bottom of the masthead, pin the nav
+      if(window.scrollY >= (mastBottom - 2)){
+        if(!navBar.classList.contains('pinned')){
+          navBar.classList.add('pinned');
+          // set spacer to nav height to avoid layout jump
+          navSpacer.style.height = navBar.offsetHeight + 'px';
+          // hide masthead smoothly
+          if(masthead) masthead.classList.add('masthead--hidden');
+        }
+      } else {
+        if(navBar.classList.contains('pinned')){
+          navBar.classList.remove('pinned');
+          navSpacer.style.height = '0px';
+          if(masthead) masthead.classList.remove('masthead--hidden');
+        }
+      }
+
+      // small elevation when page scroll is > 10 (keeps previous behavior but subtle)
+      if(window.scrollY > 10){
+        navBar.classList.add('is-scrolled');
+      } else {
+        navBar.classList.remove('is-scrolled');
+      }
+    }
+
+    window.addEventListener('scroll', updatePinned, {passive:true});
+    window.addEventListener('resize', updatePinned);
+    // initialize on load
+    setTimeout(updatePinned,20);
+  })();
+  </script>
 
 </body>
 </html>
