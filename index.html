@@ -21,6 +21,11 @@
   --glass-border:rgba(248,241,229,0.18);
   --radius:16px;
   --max-content-width:1200px;
+
+  /* header heights */
+  --topbar-height:32px;
+  --masthead-height:92px;    /* area with centered logo and icons */
+  --nav-height:56px;         /* sticky nav height */
 }
 
 /* ---------- Reset ---------- */
@@ -43,77 +48,75 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:8px 20px;
+  padding:6px 20px;
   gap:12px;
 }
 .topbar .left, .topbar .right{display:flex;align-items:center;gap:14px}
 .topbar a{color:inherit;text-decoration:none;opacity:.9;font-weight:500}
 
-/* ---------- Header / Nav ---------- */
-.header{
-  position:sticky;
-  top:0;
-  z-index:190;
-  backdrop-filter: blur(8px) saturate(140%);
-  background: linear-gradient(180deg, rgba(248,241,229,0.6), rgba(248,241,229,0.45)); /* replaced whites */
+/* ---------- Header overall container ---------- */
+/* We'll split header into: masthead (logo + icons) and nav-bar (menu) */
+.header-outer{
+  width:100%;
+  position:relative;
+  z-index:250;
+  /* visual backdrop */
+  backdrop-filter: blur(6px) saturate(120%);
+  background: linear-gradient(180deg, rgba(248,241,229,0.6), rgba(248,241,229,0.45));
   border-bottom:1px solid rgba(0,0,0,0.05);
 }
 
-.header-inner{
+/* ---------- Masthead: centered logo + right icons ---------- */
+.masthead{
   max-width:var(--max-content-width);
   margin:0 auto;
-  padding: 6px 20px;
-  display:flex;
+  padding:12px 20px;
+  height:var(--masthead-height);
+  display:grid;
+  grid-template-columns: 1fr auto 1fr; /* left / center / right */
   align-items:center;
-  justify-content:space-between;
   gap:12px;
 }
 
-.brand {
+/* left column intentionally empty to visually center the logo */
+.masthead .left-col{}
+
+/* center column holds the logo centered */
+.masthead .center-col{
   display:flex;
+  justify-content:center;
   align-items:center;
-  gap:14px;
 }
 
+/* right column contains the icon cluster and aligns right */
+.masthead .right-col{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:12px;
+}
+
+/* logo sizing — large but doesn't increase masthead height due to layout */
 .brand img.logo {
-  max-height: 80px;
-  height: 80px;
-  width: auto;
-  object-fit: contain;
+  max-height:80px;      /* desired logo size */
+  height:80px;
+  width:auto;
+  display:block;
+  object-fit:contain;
+  line-height:0;
 }
 
+/* optional brand text (hidden by default since logo includes name) */
+.brand h1{display:none}
 
-.brand h1{
-  font-family:Playfair Display, serif;
-  font-size:18px;
-  letter-spacing:.6px;
-  margin:0;
-}
-
-/* Primary nav */
-.primary-nav{
-  display:flex;
-  gap:20px;
-  align-items:center;
-  margin-left:8px;
-}
-
-.primary-nav a{
-  text-decoration:none;
-  color:var(--brand);
-  font-weight:600;
-  font-size:14px;
-  letter-spacing:.6px;
-  opacity:.95;
-}
-
-/* Icon cluster (search/account/wishlist/cart) */
+/* ---------- Icon cluster (search/account/wishlist/cart) ---------- */
 .icon-cluster{
   display:flex;
-  gap:14px;
+  gap:12px;
   align-items:center;
 }
 
+/* small icon button */
 .icon-btn{
   background:transparent;
   border:none;
@@ -121,12 +124,81 @@ body{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  padding:6px;
+  padding:8px;
   border-radius:10px;
+  height:36px;
+  width:36px;
 }
 
 /* subtle hover */
 .icon-btn:hover{background:rgba(15,22,34,0.03)}
+
+/* ---------- Navigation Bar (sticky) ---------- */
+.nav-bar{
+  position:sticky;
+  top:0; /* will stick to top when scrolled */
+  z-index:240;
+  background:var(--bg); /* solid background so it separates from content */
+  border-bottom:1px solid rgba(0,0,0,0.04);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+}
+
+/* nav inner centers the menu items like luxury sites */
+.nav-inner{
+  max-width:var(--max-content-width);
+  margin:0 auto;
+  padding:10px 20px;
+  height:var(--nav-height);
+  display:flex;
+  align-items:center;
+  justify-content:center; /* center the nav links */
+}
+
+/* Primary nav */
+.primary-nav{
+  display:flex;
+  gap:28px;
+  align-items:center;
+  justify-content:center;
+  list-style:none;
+  padding:0;
+  margin:0;
+  font-family:Playfair Display, serif;
+  font-weight:600;
+  letter-spacing:1px;
+}
+
+.primary-nav a{
+  text-decoration:none;
+  color:var(--brand);
+  font-weight:600;
+  font-size:14px;
+  opacity:.95;
+  padding:6px 4px;
+}
+
+/* subtle separator under active/hover */
+.primary-nav a:hover{
+  opacity:1;
+  text-decoration:none;
+  border-bottom:2px solid rgba(15,22,34,0.06);
+  padding-bottom:4px;
+}
+
+/* ---------- Mobile tweaks for masthead + nav ---------- */
+@media (max-width:900px){
+  .masthead{
+    grid-template-columns: auto 1fr auto;
+    padding:8px 14px;
+    height:auto;
+  }
+  .masthead .left-col{ display:flex; align-items:center; gap:8px; }
+  .masthead .center-col{ justify-content:flex-start; padding-left:12px; }
+  .brand img.logo{ max-height:56px; height:56px; }
+  .nav-inner{ padding:8px 14px; }
+  .primary-nav{ gap:16px; font-size:13px; }
+  .icon-btn{ height:34px; width:34px; padding:6px;}
+}
 
 /* ---------- Hero (full-bleed) ---------- */
 .hero-wrap{
@@ -136,7 +208,8 @@ body{
   background:#eee;
 }
 
-/* use the uploaded screenshot as background */
+/* use the uploaded screenshot as background (developer-provided file path) */
+/* The developer asked to include the uploaded screenshot path exactly as-is so it can be transformed to a URL by tooling. */
 .hero-visual{
   width:100%;
   height:78vh;
@@ -199,49 +272,7 @@ body{
   margin-right:auto;
 }
 
-/* hero CTAs */
-.hero-ctas{
-  display:flex;
-  gap:16px;
-  justify-content:center;
-  margin-top:26px;
-}
-
-.btn{
-  pointer-events:auto;
-  padding:12px 20px;
-  border-radius:8px;
-  border:1px solid rgba(248,241,229,0.35); /* was white -> brand */
-  background:rgba(248,241,229,0.95); /* was white -> brand */
-  color:var(--brand); /* text stays dark on buttons */
-  font-weight:700;
-  cursor:pointer;
-  font-size:14px;
-}
-
-/* Outline buttons: default (non-hero) keep dark text; hero will override below */
-.btn.outline{
-  background:transparent;
-  color:var(--brand); /* keep dark by default */
-  border:1px solid rgba(248,241,229,0.9); /* border in brand */
-}
-
-/* hero-specific override so CTAs inside the hero keep white outline/text (original visual) */
-.hero-content .btn.outline{
-  color:#fff; /* keep white for hero */
-  border:1px solid rgba(255,255,255,0.9);
-}
-
-/* small badge CTA under hero like the reference */
-.hero-cta-row{
-  margin-top:28px;
-  display:flex;
-  gap:12px;
-  justify-content:center;
-  pointer-events:auto;
-}
-
-/* ---------- Brand-colored band under hero (discover) ---------- */
+/* ---------- Discover / Collections / Cards (unchanged visually) ---------- */
 .discover{
   background:var(--bg); /* was white -> brand */
   padding:44px 20px;
@@ -259,7 +290,6 @@ body{
   letter-spacing:.6px;
 }
 
-/* ---------- Collections grid ---------- */
 .section{
   max-width:var(--max-content-width);
   margin:0 auto;
@@ -309,13 +339,13 @@ body{
 .product-title{font-weight:600;margin-bottom:8px}
 .product-price{font-weight:700;margin-bottom:12px}
 
-/* ---------- Cart drawer ---------- */
+/* cart drawer, search modal, footer kept as-is but with brand bg */
 .cart-drawer{
   position:fixed;
   right:0; top:0;
   width:380px;
   height:100%;
-  background:var(--bg); /* was white -> brand */
+  background:var(--bg);
   border-left:1px solid rgba(0,0,0,0.06);
   transform:translateX(420px);
   transition:transform .33s;
@@ -323,10 +353,8 @@ body{
   overflow:auto;
   padding:28px;
 }
-
 .cart-drawer.open{transform:translateX(0)}
 
-/* ---------- Search modal ---------- */
 .modal-backdrop{
   position:fixed;
   inset:0;
@@ -336,18 +364,16 @@ body{
   align-items:center;
   justify-content:center;
 }
-
 .modal-backdrop.open{display:flex}
 
 .search-modal{
   width:100%;
   max-width:820px;
-  background:var(--bg); /* was white -> brand */
+  background:var(--bg);
   border-radius:10px;
   padding:20px;
 }
 
-/* ---------- Footer small ---------- */
 .footer{
   padding:40px 20px;
   text-align:center;
@@ -355,21 +381,18 @@ body{
   font-size:14px;
 }
 
-/* ---------- Responsive ---------- */
-@media (max-width:900px){
-  .hero-title{font-size:32px}
-  .hero-visual{height:60vh;min-height:420px}
-  .product-thumb{height:240px}
-  .header-inner{padding:12px 16px}
-  .topbar{font-size:12px;padding:6px 14px}
-  .discover{padding:28px 14px}
-}
+/* ---------- Small screens responsive ---------- */
 @media (max-width:520px){
   .primary-nav{display:none}
   .hero-title{font-size:26px}
   .hero-sub{font-size:14px}
   .hero-ctas{flex-direction:column;gap:10px}
-  .hero-card{display:none}
+}
+
+/* slight transition for nav when pinned */
+.nav-bar.is-scrolled{
+  box-shadow: 0 6px 20px rgba(15,22,34,0.08);
+  transition:box-shadow .22s;
 }
 </style>
 </head>
@@ -388,53 +411,71 @@ body{
     </div>
   </div>
 
-  <!-- Header / Navigation -->
-  <header class="header" role="banner">
-    <div class="header-inner">
-      <div style="display:flex;align-items:center;gap:18px;">
-        <div class="brand">
-          <img src="yerram_logo_trans.png" class="logo" alt="Yerram logo" onerror="this.style.display='none'">
-          <h1>Yerram</h1>
-        </div>
+  <!-- Header: masthead (logo + icons) on top, nav-bar below (sticky) -->
+  <header class="header-outer" role="banner" aria-label="Site header">
 
-        <nav class="primary-nav" aria-label="Primary navigation">
-          <a href="#gifts">Gifts</a>
-          <a href="#new">New In</a>
-          <a href="#womens">Women's</a>
-          <a href="#mens">Men's</a>
-          <a href="#collections">Collections</a>
-          <a href="#high">High Jewelry</a>
-        </nav>
+    <!-- MASTHEAD: centered logo, icons right -->
+    <div class="masthead" role="region" aria-label="Brand masthead">
+      <div class="left-col" aria-hidden="true">
+        <!-- Intentionally left blank to center the logo visually -->
       </div>
 
-      <div class="icon-cluster" aria-hidden="false">
-        <!-- search -->
-        <button class="icon-btn" id="btnSearch" aria-label="Search">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M21 21l-4.35-4.35" stroke="#0f1622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="6" stroke="#0f1622" stroke-width="2" fill="none"/></svg>
-        </button>
+      <div class="center-col">
+        <div class="brand">
+          <!-- Your logo image (name+mark) centered. If you want the transparent PNG with wordmark, use that file. -->
+          <img src="yerram_logo_name_trans.png" class="logo" alt="Yerram logo" onerror="this.style.display='none'">
+        </div>
+      </div>
 
-        <!-- account -->
-        <button class="icon-btn" aria-label="Account" onclick="alert('Account action — implement auth flow')">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="#0f1622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="#0f1622" stroke-width="2" fill="none"/></svg>
-        </button>
+      <div class="right-col">
+        <div class="icon-cluster" aria-hidden="false">
+          <!-- search -->
+          <button class="icon-btn" id="btnSearch" aria-label="Search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M21 21l-4.35-4.35" stroke="#0f1622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="6" stroke="#0f1622" stroke-width="2" fill="none"/></svg>
+          </button>
 
-        <!-- favorites -->
-        <button class="icon-btn" aria-label="Favorites" onclick="alert('Favorites — placeholder')">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M20.8 4.6a4.5 4.5 0 0 0-6.4 0L12 7l-2.4-2.4a4.5 4.5 0 0 0-6.4 6.4L12 21l8.8-9.9a4.5 4.5 0 0 0 0-6.5z" stroke="#0f1622" stroke-width="1.2" fill="none"/></svg>
-        </button>
+          <!-- favorites -->
+          <button class="icon-btn" aria-label="Favorites" onclick="alert('Favorites — placeholder')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M20.8 4.6a4.5 4.5 0 0 0-6.4 0L12 7l-2.4-2.4a4.5 4.5 0 0 0-6.4 6.4L12 21l8.8-9.9a4.5 4.5 0 0 0 0-6.5z" stroke="#0f1622" stroke-width="1.2" fill="none"/></svg>
+          </button>
 
-        <!-- cart -->
-        <button class="icon-btn" id="openCartBtn" aria-label="Open cart">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M6 6h15l-1.5 9h-11L6 6z" stroke="#0f1622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20" r="1" fill="#0f1622"/><circle cx="18" cy="20" r="1" fill="#0f1622"/></svg>
-        </button>
+          <!-- account -->
+          <button class="icon-btn" aria-label="Account" onclick="alert('Account action — implement auth flow')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="#0f1622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="#0f1622" stroke-width="2" fill="none"/></svg>
+          </button>
+
+          <!-- cart -->
+          <button class="icon-btn" id="openCartBtn" aria-label="Open cart">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M6 6h15l-1.5 9h-11L6 6z" stroke="#0f1622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20" r="1" fill="#0f1622"/><circle cx="18" cy="20" r="1" fill="#0f1622"/></svg>
+          </button>
+        </div>
       </div>
     </div>
+
+    <!-- NAV BAR: sticky and centered links (this is the only part that will stick on scroll) -->
+    <nav class="nav-bar" role="navigation" aria-label="Primary navigation">
+      <div class="nav-inner">
+        <ul class="primary-nav" role="menubar" aria-label="Primary">
+          <li role="none"><a role="menuitem" href="#womens">WOMEN</a></li>
+          <li role="none"><a role="menuitem" href="#mens">MEN</a></li>
+          <li role="none"><a role="menuitem" href="#home">HOME, OUTDOOR AND EQUESTRIAN</a></li>
+          <li role="none"><a role="menuitem" href="#jewelry">JEWELRY AND WATCHES</a></li>
+          <li role="none"><a role="menuitem" href="#fragrance">FRAGRANCES AND MAKE-UP</a></li>
+          <li role="none"><a role="menuitem" href="#gifts">GIFTS AND PETIT H</a></li>
+          <li role="none"><a role="menuitem" href="#special">SPECIAL EDITIONS AND SERVICES</a></li>
+          <li role="none"><a role="menuitem" href="#about">ABOUT YERRAM</a></li>
+        </ul>
+      </div>
+    </nav>
   </header>
 
   <!-- HERO -->
   <section class="hero-wrap" aria-label="Hero">
-    <!-- local uploaded screenshot used as hero visual -->
-    <img class="hero-visual" src="main_background.png" alt="Hero background">
+    <!-- NOTE: developer uploaded screenshot path is used here as the hero visual src.
+         The path is left exact so your tooling can transform it to a URL:
+         /mnt/data/Screenshot 2025-11-21 at 10.55.22 AM.png
+         If you prefer to use your own image file, replace src accordingly. -->
+    <img class="hero-visual" src="/mnt/data/Screenshot 2025-11-21 at 10.55.22 AM.png" alt="Hero background — reference screenshot">
 
     <div class="hero-overlay" role="presentation">
       <div class="hero-content">
@@ -442,13 +483,12 @@ body{
         <h1 class="hero-title">Extraordinary memories</h1>
         <p class="hero-sub">Modern heirlooms crafted with precision — quiet, considered, and built to outlast trends.</p>
 
-        <div class="hero-ctas" role="group" aria-label="Hero calls to action">
+        <div class="hero-ctas" role="group" aria-label="Hero calls to action" style="margin-top:20px;">
           <button class="btn" onclick="scrollToSection('collections')">Shop Gifts for Her</button>
-          <button class="btn outline" onclick="scrollToSection('collections')">Shop Gifts for Him</button>
+          <button class="btn outline" onclick="scrollToSection('collections')" style="margin-left:12px;">Shop Gifts for Him</button>
         </div>
 
         <div class="hero-cta-row" aria-hidden="true" style="margin-top:18px;">
-          <!-- small subtitle/credit similar to reference -->
           <div style="background:rgba(0,0,0,0.45);padding:6px 10px;border-radius:8px;font-weight:600;font-size:13px;color:#fff;">Featuring Eiza González</div>
         </div>
       </div>
@@ -639,6 +679,25 @@ body{
   // year
   document.getElementById('year').textContent = new Date().getFullYear();
 
+  /* ---------- Small JS enhancement: add class to nav when scrolled to show shadow ---------- */
+  (function(){
+    const navBar = document.querySelector('.nav-bar');
+    const hero = document.querySelector('.hero-wrap');
+    const masthead = document.querySelector('.masthead');
+
+    function onScroll(){
+      // When the page is scrolled any amount, add subtle elevation to nav bar
+      if(window.scrollY > 10){
+        navBar.classList.add('is-scrolled');
+      } else {
+        navBar.classList.remove('is-scrolled');
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, {passive:true});
+    // initialize
+    onScroll();
+  })();
   </script>
 
 </body>
