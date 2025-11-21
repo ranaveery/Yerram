@@ -57,6 +57,7 @@ body{
   backdrop-filter: blur(8px) saturate(140%);
   background: linear-gradient(180deg, rgba(248,241,229,0.6), rgba(248,241,229,0.45)); /* replaced whites */
   border-bottom:1px solid rgba(0,0,0,0.05);
+  height: 72px;
 }
 
 .header-inner{
@@ -75,11 +76,13 @@ body{
   gap:14px;
 }
 
-.brand img.logo{
-  width:80px;
-  height:auto;
-  display:block;
+.brand img.logo {
+  max-height: 64px;
+  height: 64px;
+  width: auto;
+  object-fit: contain;
 }
+
 
 .brand h1{
   font-family:Playfair Display, serif;
