@@ -335,17 +335,32 @@ body{
   font-size:20px;
   letter-spacing:.6px;
 }
-.section{
-  max-width:var(--max-content-width);
-  margin:0 auto;
-  padding:64px 20px;
+
+/* -------- NEW COLLECTION BANNERS -------- */
+.collection-banner{
+  position:relative;
+  width:100%;
+  height:260px;
+  border-radius:14px;
+  overflow:hidden;
+  margin-bottom:32px;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  display:flex;
+  align-items:flex-end;
 }
-.section h2{
-  font-family:Playfair Display,serif;
+.collection-banner h3{
+  font-family: "Playfair Display", serif;
   font-size:32px;
-  margin-bottom:28px;
-  text-align:center;
+  color:white;
+  padding:20px 26px;
+  text-shadow:0 6px 18px rgba(0,0,0,0.55);
+  letter-spacing:1px;
+  margin:0;
 }
+
+/* ---------- product grid (unchanged, still used below) ---------- */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
@@ -516,10 +531,32 @@ body{
     </div>
   </div>
 
-  <!-- Collections -->
+  <!-- COLLECTIONS (UPDATED) -->
   <section id="collections" class="section" aria-labelledby="collections-title">
     <h2 id="collections-title">Collections</h2>
-    <div class="grid" id="product-grid"></div>
+
+    <!-- Rings -->
+    <div class="collection-banner" style="background-image:url('rings_bg.png');">
+      <h3>Rings</h3>
+    </div>
+
+    <!-- Necklaces -->
+    <div class="collection-banner" style="background-image:url('necklaces_bg.png');">
+      <h3>Necklaces</h3>
+    </div>
+
+    <!-- Watches -->
+    <div class="collection-banner" style="background-image:url('watches_bg.png');">
+      <h3>Watches</h3>
+    </div>
+
+    <!-- Hand Bags -->
+    <div class="collection-banner" style="background-image:url('handbags_bg.png');">
+      <h3>Hand Bags</h3>
+    </div>
+
+    <!-- Keep product grid (hidden unless used later) -->
+    <div class="grid" id="product-grid" style="margin-top:40px;"></div>
   </section>
 
   <!-- About & Contact -->
