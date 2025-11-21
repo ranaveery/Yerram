@@ -4,139 +4,272 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Yerram — Crafted to outlast you</title>
-<meta name="description" content="Yerram jewelry — timeless pieces crafted to outlast you. Hand-finished materials, limited collections.">
+
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
 <style>
-:root{
-  --brand:#0f1724;
-  --accent:#b88b6f;
-  --muted:#6b7280;
-  --bg:#faf9f7;
-  --card:#ffffff;
-  --radius:14px;
+/* ------------------------------------------------------
+   GLOBAL
+------------------------------------------------------ */
+:root {
+  --brand:#0f1622;
+  --accent:#b89a78;
+  --muted:#7a818c;
+  --bg:#f8f7f4;
+  --glass:rgba(255,255,255,0.5);
+  --glass-border:rgba(255,255,255,0.25);
+  --radius:18px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html,body { scroll-behavior:smooth; }
+body {
+  font-family:Inter, system-ui;
+  background:linear-gradient(180deg,#fdfcfb,#f8f7f4);
+  color:var(--brand);
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ------------------------------------------------------
+   HEADER — Liquid Glass Top Bar
+------------------------------------------------------ */
+header {
+  position:fixed;
+  top:0; left:0; right:0;
+  padding:18px 28px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  backdrop-filter:blur(14px) saturate(180%);
+  background:var(--glass);
+  border-bottom:1px solid var(--glass-border);
+  z-index:200;
+}
+
+.brand {
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.logo {
+  width:46px;
+  height:auto;
+}
+
+.brand h1 {
+  font-family:Playfair Display;
+  font-size:20px;
+  letter-spacing:.5px;
+}
+
+nav a {
+  text-decoration:none;
+  font-weight:600;
+  color:var(--brand);
+  margin-left:18px;
+}
+
+/* ------------------------------------------------------
+   HERO (Matches your App Homepage)
+------------------------------------------------------ */
+.hero {
+  padding:140px 28px 80px;
+  display:grid;
+  grid-template-columns:1fr 420px;
+  gap:40px;
+  align-items:center;
+}
+
+.headline {
+  font-family:Playfair Display;
+  font-size:48px;
+  line-height:1.08;
+}
+
+.sub {
+  margin-top:14px;
   font-size:16px;
+  color:var(--muted);
 }
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:var(--brand);background:linear-gradient(180deg,#fbfaf8,var(--bg));-webkit-font-smoothing:antialiased;scroll-behavior:smooth;}
-header{display:flex;align-items:center;justify-content:space-between;padding:20px 32px;position:sticky;top:0;background:rgba(250,249,247,0.95);backdrop-filter:blur(5px);z-index:50;transition:0.3s;}
-.brand{display:flex;align-items:center;gap:14px}
-.logo{height:52px;width:auto;object-fit:contain;}
-.brand h1{margin:0;font-family:Playfair Display;font-size:18px}
-.motto{font-size:12px;color:var(--muted);}
-nav{display:flex;gap:18px;align-items:center}
-nav a{color:var(--brand);text-decoration:none;font-weight:600}
-.cta{padding:8px 14px;border-radius:10px;background:var(--brand);color:white;font-weight:600;border:none;cursor:pointer;transition:0.2s;}
-.cta:hover{opacity:0.9}
 
-/* Hero */
-.hero{display:grid;grid-template-columns:1fr 460px;gap:40px;padding:80px 32px;align-items:center}
-.hero-left{max-width:720px}
-.eyebrow{font-size:13px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
-.headline{font-family:Playfair Display;font-size:44px;margin:12px 0 8px;line-height:1.1}
-.sub{color:var(--muted);font-size:15px;line-height:1.6;margin-top:8px}
-.hero-actions{margin-top:24px;display:flex;gap:12px}
-.btn-outline{padding:10px 16px;border-radius:10px;border:1px solid rgba(16,24,40,0.1);background:transparent;cursor:pointer;transition:0.2s}
-.btn-outline:hover{background:var(--brand);color:white}
-
-/* Hero right */
-.hero-right{background:linear-gradient(180deg, rgba(255,255,255,0.5), rgba(255,255,255,0.35));padding:22px;border-radius:18px;box-shadow:0 8px 30px rgba(16,24,40,0.06);transition:transform 0.3s;}
-.hero-right:hover{transform:translateY(-5px);}
-.hero-product{display:flex;gap:16px;align-items:center}
-.hero-product img{width:120px;height:120px;object-fit:cover;border-radius:12px;transition:0.3s;}
-.hero-product img:hover{transform:scale(1.05);}
-.hero-product .info{max-width:300px}
-.price{font-weight:700;color:var(--brand)}
-
-/* Sections */
-.section{padding:56px 32px}
-.section h2{font-family:Playfair Display;margin:6px 0 24px;font-size:28px}
-
-/* Product Grid */
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
-.card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 6px 18px rgba(16,24,40,0.05);display:flex;flex-direction:column;gap:10px;transition:transform 0.3s;}
-.card:hover{transform:translateY(-5px)}
-.product-thumb{width:100%;height:220px;border-radius:10px;overflow:hidden;display:block}
-.product-thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.prod-title{font-weight:600;font-size:16px}
-.prod-meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}
-.actions{display:flex;gap:8px}
-.btn{padding:8px 10px;border-radius:10px;border:1px solid rgba(16,24,40,0.06);background:transparent;cursor:pointer;transition:0.2s}
-.btn:hover{opacity:0.8}
-.btn-primary{background:var(--accent);color:white;border:none}
-
-/* Cart Drawer */
-.cart-drawer{position:fixed;right:18px;bottom:18px;background:var(--card);padding:18px;border-radius:12px;box-shadow:0 12px 28px rgba(16,24,40,0.12);width:360px;max-height:70vh;overflow:auto;transform:translateX(400px);transition:0.3s;z-index:100}
-.cart-drawer.open{transform:translateX(0)}
-.cart-item{display:flex;gap:12px;align-items:center;padding:8px 0;border-bottom:1px dashed rgba(16,24,40,0.04)}
-.cart-item img{width:56px;height:56px;border-radius:8px;object-fit:cover}
-.cart-footer{display:flex;justify-content:space-between;align-items:center;padding-top:12px}
-
-/* Footer */
-footer{padding:28px 32px;border-top:1px solid rgba(16,24,40,0.04);margin-top:44px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
-
-/* Responsive */
-@media (max-width:900px){
-  .hero{grid-template-columns:1fr;padding:28px 18px;gap:24px}
-  header{padding:14px 18px}
-  .hero-right{order:2;width:100%}
-  .grid{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.hero-buttons {
+  margin-top:26px;
+  display:flex;
+  gap:14px;
 }
-@media(max-width:600px){
-  nav{display:none}
-  .mobile-menu{display:flex;flex-direction:column;gap:16px;padding:20px;background:var(--card);position:absolute;top:70px;right:32px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.12)}
+
+.btn-primary {
+  padding:12px 18px;
+  border:none;
+  border-radius:12px;
+  background:var(--brand);
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.btn-outline {
+  padding:12px 18px;
+  border-radius:12px;
+  background:transparent;
+  border:1px solid var(--brand);
+  font-weight:600;
+  color:var(--brand);
+  cursor:pointer;
+}
+
+/* RIGHT FEATURED PRODUCT */
+.hero-card {
+  background:var(--glass);
+  backdrop-filter:blur(18px);
+  border:1px solid var(--glass-border);
+  padding:22px;
+  border-radius:var(--radius);
+  box-shadow:0 8px 30px rgba(15,22,34,0.08);
+  transition:.3s;
+}
+
+.hero-card:hover {
+  transform:translateY(-4px);
+}
+
+/* ------------------------------------------------------
+   PRODUCT GRID
+------------------------------------------------------ */
+.section {
+  padding:70px 28px;
+}
+
+.section h2 {
+  font-family:Playfair Display;
+  font-size:32px;
+  margin-bottom:30px;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:26px;
+}
+
+.card {
+  background:white;
+  border-radius:var(--radius);
+  padding:14px;
+  box-shadow:0 5px 20px rgba(0,0,0,.05);
+  transition:.25s;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.card:hover { transform:translateY(-4px); }
+
+.card img {
+  width:100%; height:220px;
+  border-radius:14px;
+  object-fit:cover;
+}
+
+/* ------------------------------------------------------
+   CART DRAWER (Right slide-in)
+------------------------------------------------------ */
+.cart-drawer {
+  position:fixed;
+  right:0; top:0;
+  width:350px;
+  height:100%;
+  background:white;
+  border-left:1px solid rgba(0,0,0,.08);
+  padding:24px;
+  transform:translateX(400px);
+  transition:.35s;
+  overflow-y:auto;
+  z-index:250;
+}
+
+.cart-drawer.open { transform:translateX(0); }
+
+/* ------------------------------------------------------
+   MOBILE BOTTOM NAV (Matches your app tabs)
+------------------------------------------------------ */
+.bottom-nav {
+  display:none;
+}
+
+@media(max-width:720px){
+  nav { display:none; }
+
+  .hero { grid-template-columns:1fr; padding-top:160px; }
+
+  .bottom-nav {
+    display:flex;
+    position:fixed;
+    bottom:0; left:0; right:0;
+    background:var(--glass);
+    backdrop-filter:blur(18px);
+    border-top:1px solid var(--glass-border);
+    padding:12px 0;
+    justify-content:space-around;
+    z-index:300;
+  }
+
+  .bottom-nav button {
+    background:none;
+    border:none;
+    font-size:12px;
+    color:var(--brand);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    cursor:pointer;
+  }
+
+  .bottom-nav svg {
+    width:22px; height:22px;
+  }
 }
 </style>
 </head>
+
 <body>
+
 <header>
   <div class="brand">
-    <img class="logo" src="yerram_logo.png" alt="Yerram logo">
-    <div>
-      <h1>Yerram</h1>
-      <div class="motto">Crafted to outlast you</div>
-    </div>
+    <img src="yerram_logo.png" class="logo" alt="Yerram">
+    <h1>Yerram</h1>
   </div>
   <nav>
     <a href="#collections">Collections</a>
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
-    <button class="cta" id="open-cart">Cart (0)</button>
+    <a href="#" id="openCart">Cart</a>
   </nav>
 </header>
 
 <main>
+
 <section class="hero">
-  <div class="hero-left">
-    <div class="eyebrow">Fine jewelry — responsibly made</div>
-    <h2 class="headline">Yerram — Modern heirlooms for everyday boldness.</h2>
-    <p class="sub">Minimal, meaningful jewelry using durable materials. Each piece is hand-finished for generations.</p>
-    <div class="hero-actions">
-      <button class="cta" onclick="scrollToSection('collections')">Shop Collections</button>
+  <div>
+    <h2 class="headline">Modern heirlooms crafted to outlast you.</h2>
+    <p class="sub">Timeless pieces. Precise materials. Designed with the same energy as your app — clean, bold, intentional.</p>
+
+    <div class="hero-buttons">
+      <button class="btn-primary" onclick="scrollToSection('collections')">Shop</button>
       <button class="btn-outline" onclick="scrollToSection('about')">Our Story</button>
     </div>
   </div>
-  <aside class="hero-right" aria-hidden="false">
-    <div style="display:flex;align-items:center;justify-content:space-between">
-      <div>
-        <div style="font-size:12px;color:var(--muted)">Featured</div>
-        <div style="font-weight:700;font-size:16px;margin-top:4px">The Atlas Signet</div>
-      </div>
-      <div class="price">$185</div>
-    </div>
-    <div class="hero-product" style="margin-top:12px">
-      <img src="https://images.unsplash.com/photo-1549921296-3d9a1b0f2c6f?q=80&w=800&auto=format&fit=crop" alt="Atlas signet ring">
-      <div class="info">
-        <div style="color:var(--muted);font-size:13px">Sterling / 14k vermeil</div>
-        <div style="margin-top:6px;color:var(--muted);font-size:13px">Classic signet with a modern angled face and satin finish.</div>
-        <div style="margin-top:10px;display:flex;gap:8px">
-          <button class="btn" onclick="addToCart(sampleProducts[0])">Add to cart</button>
-          <button class="btn btn-primary" onclick="openQuickView(sampleProducts[0])">Quick view</button>
-        </div>
-      </div>
-    </div>
-  </aside>
+
+  <div class="hero-card">
+    <h4 style="margin-bottom:6px; font-weight:600">Featured • Atlas Signet</h4>
+    <img src="https://images.unsplash.com/photo-1549921296-3d9a1b0f2c6f?q=80" style="width:100%; height:260px; object-fit:cover; border-radius:14px;">
+    <div style="margin-top:10px; font-weight:700; font-size:18px;">$185</div>
+  </div>
 </section>
 
 <section id="collections" class="section">
@@ -145,105 +278,116 @@ footer{padding:28px 32px;border-top:1px solid rgba(16,24,40,0.04);margin-top:44p
 </section>
 
 <section id="about" class="section">
-  <h2>About Yerram</h2>
-  <p style="max-width:800px;color:var(--muted)">Yerram creates jewelry that lasts. Hand-finished, responsibly sourced, and designed to endure time and trends.</p>
+  <h2>About</h2>
+  <p style="max-width:700px; color:var(--muted); line-height:1.6;">
+    Yerram blends luxury minimalism with technology-inspired precision — the same energy your app gives off. Clean. Intentional. Built to endure.
+  </p>
 </section>
 
 <section id="contact" class="section">
-  <h2>Contact & Care</h2>
-  <div style="display:flex;gap:18px;flex-wrap:wrap">
-    <form onsubmit="event.preventDefault();alert('Message sent (demo)')" style="min-width:280px;max-width:540px;background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 20px rgba(16,24,40,0.04)">
-      <label>Name</label>
-      <input required style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(16,24,40,0.06);margin-bottom:10px" />
-      <label>Email</label>
-      <input type="email" required style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(16,24,40,0.06);margin-bottom:10px" />
-      <label>Message</label>
-      <textarea required style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(16,24,40,0.06);margin-bottom:10px"></textarea>
-      <button class="btn-primary" type="submit">Send</button>
-    </form>
-    <div style="min-width:240px;color:var(--muted)">
-      <h4>Care & Repairs</h4>
-      <p>Lifetime guidance and limited repair services. Email care@yerram.example</p>
-      <h4>Wholesale / Press</h4>
-      <p>Email: press@yerram.example</p>
-    </div>
-  </div>
+  <h2>Contact</h2>
+  <p style="max-width:700px; color:var(--muted); line-height:1.6;">
+    Need care, sizing, or support? Email us anytime: care@yerram.example
+  </p>
 </section>
+
 </main>
 
-<footer>
-  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
-    <div>
-      <div style="font-weight:700">Yerram</div>
-      <div style="color:var(--muted);font-size:13px">Crafted to outlast you</div>
-    </div>
-    <div style="color:var(--muted);font-size:13px">© Yerram — All rights reserved</div>
-  </div>
-</footer>
+<!-- CART DRAWER -->
+<div id="cartDrawer" class="cart-drawer"></div>
 
-<!-- Cart -->
-<div id="cart" class="cart-drawer"></div>
-
-<!-- Quick view modal -->
-<div id="quickview" style="position:fixed;inset:0;display:none;place-items:center;background:rgba(6,6,6,0.45);z-index:60">
-  <div style="background:var(--card);padding:18px;border-radius:12px;max-width:900px;width:92%;box-shadow:0 20px 50px rgba(16,24,40,0.6);display:flex;gap:18px;align-items:flex-start">
-    <img id="q-img" src="" alt="" style="width:320px;height:320px;object-fit:cover;border-radius:8px">
-    <div style="flex:1">
-      <h3 id="q-title" style="margin-top:0"></h3>
-      <div id="q-desc" style="color:var(--muted)"></div>
-      <div style="margin-top:12px;font-weight:700" id="q-price"></div>
-      <div style="margin-top:18px;display:flex;gap:10px">
-        <button class="btn" onclick="closeQuickView()">Close</button>
-        <button class="btn btn-primary" onclick="addToCartModal()">Add to cart</button>
-      </div>
-    </div>
-  </div>
+<!-- MOBILE BOTTOM NAV (Matches App Tab Bar) -->
+<div class="bottom-nav">
+  <button onclick="scrollToSection('top')">
+    <svg><circle cx="11" cy="11" r="9" stroke="black" stroke-width="2" fill="none"/></svg>
+    Home
+  </button>
+  <button onclick="scrollToSection('collections')">
+    <svg><rect x="4" y="4" width="14" height="14" stroke="black" stroke-width="2" fill="none"/></svg>
+    Arrivals
+  </button>
+  <button onclick="scrollToSection('collections')">
+    <svg><polygon points="11,4 18,18 4,18" stroke="black" stroke-width="2" fill="none"/></svg>
+    Favorites
+  </button>
+  <button onclick="toggleCart()">
+    <svg><circle cx="10" cy="10" r="8" stroke="black" stroke-width="2" fill="none"/></svg>
+    Cart
+  </button>
+  <button onclick="scrollToSection('about')">
+    <svg><circle cx="11" cy="8" r="3" stroke="black" stroke-width="2" fill="none"/><rect x="6" y="12" width="10" height="8" stroke="black" stroke-width="2" fill="none"/></svg>
+    Account
+  </button>
 </div>
 
 <script>
-const sampleProducts = [
-  {id:1,title:'Atlas Signet',price:185,image:'https://images.unsplash.com/photo-1549921296-3d9a1b0f2c6f?q=80&w=800',desc:'Solid signet ring with satin finish. Sterling / vermeil options.'},
-  {id:2,title:'Linea Hoop (Small)',price:95,image:'https://images.unsplash.com/photo-1519659528534-3a6e6f9b8b96?q=80&w=800',desc:'Delicate hoop with reinforced hinge.'},
-  {id:3,title:'Forge Cuff',price:220,image:'https://images.unsplash.com/photo-1530032584824-25b2a6d1464f?q=80&w=800',desc:'Minimal cuff with brushed finish. Adjustable.'},
-  {id:4,title:'Helix Pendant',price:140,image:'https://images.unsplash.com/photo-1520975919257-3f1b6b8d3b8b?q=80&w=800',desc:'Pendant on a 16" chain.'},
-  {id:5,title:'Ridge Band',price:120,image:'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=800',desc:'Textured band, stackable.'},
-  {id:6,title:'Arc Studs',price:65,image:'https://images.unsplash.com/photo-1556228579-6d9f4a7b1b8d?q=80&w=800',desc:'Small studs, secure backs.'}
+/* ------------------------------------------------------
+   SAMPLE PRODUCTS
+------------------------------------------------------ */
+const products = [
+  {id:1,title:"Atlas Signet",price:185,image:"https://images.unsplash.com/photo-1549921296-3d9a1b0f2c6f?q=80"},
+  {id:2,title:"Linea Hoop",price:95,image:"https://images.unsplash.com/photo-1519659528534-3a6e6f9b8b96?q=80"},
+  {id:3,title:"Forge Cuff",price:220,image:"https://images.unsplash.com/photo-1530032584824-25b2a6d1464f?q=80"},
+  {id:4,title:"Helix Pendant",price:140,image:"https://images.unsplash.com/photo-1520975919257-3f1b6b8d3b8b?q=80"},
 ];
 
-const grid = document.getElementById('product-grid');
-const cart = {items:[]};
-const cartDrawer = document.getElementById('cart');
+/* Render product grid */
+const grid = document.getElementById("product-grid");
 
-function renderProducts(){
-  grid.innerHTML='';
-  sampleProducts.forEach(p=>{
-    const card=document.createElement('article');
-    card.className='card';
-    card.innerHTML=`
-      <a class="product-thumb" href="#" onclick="openQuickViewById(${p.id});return false"><img src="${p.image}" alt="${p.title}"></a>
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <div class="prod-title">${p.title}</div>
-          <div class="prod-meta"><div style="color:var(--muted);font-size:13px">Sterling / Vermeil</div></div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-weight:700">$${p.price}</div>
-          <div style="color:var(--muted);font-size:13px">In stock</div>
-        </div>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
-        <div class="actions">
-          <button class="btn" onclick="openQuickViewById(${p.id})">Quick view</button>
-          <button class="btn btn-primary" onclick="addToCart(${p.id})">Add</button>
-        </div>
-        <div style="color:var(--muted);font-size:13px">Ships in 2-4 days</div>
+products.forEach(p=>{
+  const c = document.createElement("div");
+  c.className="card";
+  c.innerHTML = `
+    <img src="${p.image}">
+    <div style="font-weight:600;font-size:16px">${p.title}</div>
+    <div style="font-weight:700;margin-bottom:6px">$${p.price}</div>
+    <button class="btn-primary" onclick="addToCart(${p.id})">Add to Cart</button>
+  `;
+  grid.appendChild(c);
+});
+
+/* ------------------------------------------------------
+   CART FUNCTIONS
+------------------------------------------------------ */
+let cart = [];
+let drawer = document.getElementById("cartDrawer");
+
+function openCart(){ drawer.classList.add("open"); }
+function toggleCart(){ drawer.classList.toggle("open"); }
+
+document.getElementById("openCart").onclick = openCart;
+
+function addToCart(id){
+  const item = products.find(p=>p.id===id);
+  cart.push(item);
+  renderCart();
+  openCart();
+}
+
+function renderCart(){
+  drawer.innerHTML = "<h2>Your Cart</h2><br>";
+
+  if(cart.length === 0){
+    drawer.innerHTML += "<p>Your cart is empty.</p>";
+    return;
+  }
+
+  cart.forEach(i=>{
+    drawer.innerHTML += `
+      <div style="margin-bottom:12px;border-bottom:1px solid rgba(0,0,0,.1);padding-bottom:10px">
+        <strong>${i.title}</strong><br>
+        $${i.price}
       </div>
     `;
-    grid.appendChild(card);
   });
 }
 
-function updateCart(){
-  cartDrawer.innerHTML='';
-  if(cart.items.length===0){
-    cartDrawer.innerHTML='<p style="padding:14px;color:var
+/* Smooth scroll */
+function scrollToSection(id){
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:"smooth"});
+}
+</script>
+
+</body>
+</html>
