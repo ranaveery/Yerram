@@ -16,9 +16,9 @@
   --brand:#0f1622;
   --accent:#b89a78;
   --muted:#7a818c;
-  --bg:#f6f4f1;
-  --glass:rgba(255,255,255,0.45);
-  --glass-border:rgba(255,255,255,0.18);
+  --bg:#F8F1E5; /* brand color (was white) */
+  --glass:rgba(248,241,229,0.45);
+  --glass-border:rgba(248,241,229,0.18);
   --radius:16px;
   --max-content-width:1200px;
 }
@@ -30,7 +30,7 @@ body{
   font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
   -webkit-font-smoothing:antialiased;
   background:var(--bg);
-  color:var(--brand);
+  color:var(--brand); /* main text stays black/dark */
   line-height:1.5;
   overflow-x:hidden;
 }
@@ -38,7 +38,7 @@ body{
 /* ---------- Utility Topbar (country, shipping message) ---------- */
 .topbar{
   background:#0a0a0a;
-  color:#fff;
+  color:var(--bg); /* was white -> brand */
   font-size:13px;
   display:flex;
   justify-content:space-between;
@@ -55,7 +55,7 @@ body{
   top:0;
   z-index:190;
   backdrop-filter: blur(8px) saturate(140%);
-  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.45));
+  background: linear-gradient(180deg, rgba(248,241,229,0.6), rgba(248,241,229,0.45)); /* replaced whites */
   border-bottom:1px solid rgba(0,0,0,0.05);
 }
 
@@ -161,7 +161,7 @@ body{
   pointer-events:auto;
   max-width:1100px;
   text-align:center;
-  color: white;
+  color: white; /* KEEP hero text white */
   text-shadow: 0 6px 30px rgba(0,0,0,0.45);
 }
 
@@ -170,7 +170,7 @@ body{
   letter-spacing:2px;
   text-transform:uppercase;
   margin-bottom:14px;
-  color:rgba(255,255,255,0.95);
+  color:rgba(255,255,255,0.95); /* KEEP white */
   opacity:.95;
   font-weight:600;
 }
@@ -184,13 +184,13 @@ body{
   margin:0 auto;
   max-width:860px;
   font-weight:700;
-  color: #fff;
+  color: #fff; /* KEEP white */
 }
 
 /* sub */
 .hero-sub{
   margin-top:14px;
-  color:rgba(255,255,255,0.92);
+  color:rgba(255,255,255,0.92); /* KEEP white */
   font-size:16px;
   max-width:640px;
   margin-left:auto;
@@ -209,17 +209,24 @@ body{
   pointer-events:auto;
   padding:12px 20px;
   border-radius:8px;
-  border:1px solid rgba(255,255,255,0.35);
-  background:rgba(255,255,255,0.95);
-  color:var(--brand);
+  border:1px solid rgba(248,241,229,0.35); /* was white -> brand */
+  background:rgba(248,241,229,0.95); /* was white -> brand */
+  color:var(--brand); /* text stays dark on buttons */
   font-weight:700;
   cursor:pointer;
   font-size:14px;
 }
 
+/* Outline buttons: default (non-hero) keep dark text; hero will override below */
 .btn.outline{
   background:transparent;
-  color:#fff;
+  color:var(--brand); /* keep dark by default */
+  border:1px solid rgba(248,241,229,0.9); /* border in brand */
+}
+
+/* hero-specific override so CTAs inside the hero keep white outline/text (original visual) */
+.hero-content .btn.outline{
+  color:#fff; /* keep white for hero */
   border:1px solid rgba(255,255,255,0.9);
 }
 
@@ -232,9 +239,9 @@ body{
   pointer-events:auto;
 }
 
-/* ---------- White band under hero (discover) ---------- */
+/* ---------- Brand-colored band under hero (discover) ---------- */
 .discover{
-  background:#fff;
+  background:var(--bg); /* was white -> brand */
   padding:44px 20px;
   display:flex;
   justify-content:center;
@@ -273,7 +280,7 @@ body{
 
 /* product card */
 .product-card{
-  background:white;
+  background:var(--bg); /* was white -> brand */
   border-radius:12px;
   overflow:hidden;
   padding:0;
@@ -306,7 +313,7 @@ body{
   right:0; top:0;
   width:380px;
   height:100%;
-  background:#fff;
+  background:var(--bg); /* was white -> brand */
   border-left:1px solid rgba(0,0,0,0.06);
   transform:translateX(420px);
   transition:transform .33s;
@@ -333,7 +340,7 @@ body{
 .search-modal{
   width:100%;
   max-width:820px;
-  background:white;
+  background:var(--bg); /* was white -> brand */
   border-radius:10px;
   padding:20px;
 }
@@ -441,13 +448,13 @@ body{
 
         <div class="hero-cta-row" aria-hidden="true" style="margin-top:18px;">
           <!-- small subtitle/credit similar to reference -->
-          <div style="background:rgba(0,0,0,0.45);padding:6px 10px;border-radius:8px;font-weight:600;font-size:13px;">Featuring Eiza González</div>
+          <div style="background:rgba(0,0,0,0.45);padding:6px 10px;border-radius:8px;font-weight:600;font-size:13px;color:#fff;">Featuring Eiza González</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- white discover band -->
+  <!-- discover band (brand color) -->
   <div class="discover" aria-hidden="false">
     <div class="discover-inner">
       DISCOVER OUR MOST LOVED STYLES
