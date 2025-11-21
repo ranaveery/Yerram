@@ -531,33 +531,102 @@ body{
     </div>
   </div>
 
-  <!-- COLLECTIONS (UPDATED) -->
-  <section id="collections" class="section" aria-labelledby="collections-title">
-    <h2 id="collections-title">Collections</h2>
-
-    <!-- Rings -->
-    <div class="collection-banner" style="background-image:url('rings_bg.png');">
-      <h3>Rings</h3>
+    <!-- COLLECTIONS (FOUR BUTTON ROW) -->
+  <section id="collections" class="section" aria-labelledby="collections-title" style="padding-top:40px;">
+    <h2 id="collections-title" style="text-align:center;margin-bottom:28px;">Collections</h2>
+  
+    <div class="collection-row" style="
+        display:grid;
+        grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+        gap:20px;
+        max-width:1200px;
+        margin:0 auto;
+        padding:0 20px;
+    ">
+  
+      <!-- Rings -->
+      <a href="#rings" class="collection-btn" style="
+          position:relative;
+          height:180px;
+          border-radius:14px;
+          overflow:hidden;
+          background:url('rings_bg.png') center/cover no-repeat;
+          display:flex;
+          align-items:flex-end;
+          text-decoration:none;
+      ">
+        <span style="
+          font-family:'Playfair Display', serif;
+          font-size:22px;
+          color:white;
+          padding:16px 18px;
+          text-shadow:0 4px 16px rgba(0,0,0,0.55);
+        ">Rings</span>
+      </a>
+  
+      <!-- Necklaces -->
+      <a href="#necklaces" class="collection-btn" style="
+          position:relative;
+          height:180px;
+          border-radius:14px;
+          overflow:hidden;
+          background:url('necklaces_bg.png') center/cover no-repeat;
+          display:flex;
+          align-items:flex-end;
+          text-decoration:none;
+      ">
+        <span style="
+          font-family:'Playfair Display', serif;
+          font-size:22px;
+          color:white;
+          padding:16px 18px;
+          text-shadow:0 4px 16px rgba(0,0,0,0.55);
+        ">Necklaces</span>
+      </a>
+  
+      <!-- Watches -->
+      <a href="#watches" class="collection-btn" style="
+          position:relative;
+          height:180px;
+          border-radius:14px;
+          overflow:hidden;
+          background:url('watches_bg.png') center/cover no-repeat;
+          display:flex;
+          align-items:flex-end;
+          text-decoration:none;
+      ">
+        <span style="
+          font-family:'Playfair Display', serif;
+          font-size:22px;
+          color:white;
+          padding:16px 18px;
+          text-shadow:0 4px 16px rgba(0,0,0,0.55);
+        ">Watches</span>
+      </a>
+  
+      <!-- Hand Bags -->
+      <a href="#handbags" class="collection-btn" style="
+          position:relative;
+          height:180px;
+          border-radius:14px;
+          overflow:hidden;
+          background:url('handbags_bg.png') center/cover no-repeat;
+          display:flex;
+          align-items:flex-end;
+          text-decoration:none;
+      ">
+        <span style="
+          font-family:'Playfair Display', serif;
+          font-size:22px;
+          color:white;
+          padding:16px 18px;
+          text-shadow:0 4px 16px rgba(0,0,0,0.55);
+        ">Hand Bags</span>
+      </a>
+  
     </div>
-
-    <!-- Necklaces -->
-    <div class="collection-banner" style="background-image:url('necklaces_bg.png');">
-      <h3>Necklaces</h3>
-    </div>
-
-    <!-- Watches -->
-    <div class="collection-banner" style="background-image:url('watches_bg.png');">
-      <h3>Watches</h3>
-    </div>
-
-    <!-- Hand Bags -->
-    <div class="collection-banner" style="background-image:url('handbags_bg.png');">
-      <h3>Hand Bags</h3>
-    </div>
-
-    <!-- Keep product grid (hidden unless used later) -->
-    <div class="grid" id="product-grid" style="margin-top:40px;"></div>
   </section>
+
 
   <!-- About & Contact -->
   <section id="about" class="section" style="padding-top:36px;padding-bottom:36px;">
