@@ -38,22 +38,6 @@ body{
 }
 
 /* --------------------------------------------------------------------------
-   TOPBAR
--------------------------------------------------------------------------- */
-.topbar{
-  background:#0a0a0a;
-  color:var(--bg);
-  font-size:13px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:6px 20px;
-  gap:12px;
-}
-.topbar .left, .topbar .right{display:flex;align-items:center;gap:14px}
-.topbar a{color:inherit;text-decoration:none;opacity:.9;font-weight:500}
-
-/* --------------------------------------------------------------------------
    HEADER (NORMAL, NO PINNING)
 -------------------------------------------------------------------------- */
 .header-outer{
@@ -303,17 +287,6 @@ body{
 
 <body>
 
-<!-- TOPBAR -->
-<div class="topbar">
-  <div class="left">
-    <span style="opacity:.9;">🌐 USA</span>
-    <a href="#">Store Locator</a>
-  </div>
-  <div class="right">
-    <span>Complimentary overnight shipping & gift packaging</span>
-  </div>
-</div>
-
 <!-- HEADER -->
 <header class="header-outer">
   <div class="masthead">
@@ -325,10 +298,34 @@ body{
     </div>
     <div class="right-col">
       <div class="icon-cluster">
-        <button class="icon-btn" id="btnSearch">🔍</button>
-        <button class="icon-btn" onclick="alert('Favorites')">♡</button>
-        <button class="icon-btn" onclick="alert('Account')">👤</button>
-        <button class="icon-btn" id="openCartBtn">👜</button>
+        <button class="icon-btn" id="btnSearch" aria-label="Search">
+  <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="7"></circle>
+    <line x1="16.5" y1="16.5" x2="20" y2="20"></line>
+  </svg>
+</button>
+
+<button class="icon-btn" aria-label="Favorites">
+  <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 20s-6-4.35-9-8.32C1.04 9.42 1 7.77 2.17 6.55a5.1 5.1 0 0 1 7.2 0L12 9l2.63-2.45a5.1 5.1 0 0 1 7.2 0c1.17 1.22 1.13 2.87-.83 5.13C18 15.65 12 20 12 20z"></path>
+  </svg>
+</button>
+
+<button class="icon-btn" aria-label="Account">
+  <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="7" r="4"></circle>
+    <path d="M4 20c0-4 3-7 7-7s7 3 7 7"></path>
+  </svg>
+</button>
+
+<button class="icon-btn" id="openCartBtn" aria-label="Cart">
+  <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 3h2l2 14h10l2-10H6"></path>
+    <circle cx="9" cy="19" r="1.5"></circle>
+    <circle cx="15" cy="19" r="1.5"></circle>
+  </svg>
+</button>
+
       </div>
     </div>
   </div>
