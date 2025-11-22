@@ -187,6 +187,22 @@ body{
   box-shadow: 0 6px 18px rgba(15,22,34,0.18);
 }
 
+  .hero-slider {
+  position: relative;
+  width: 300%; /* 3 slides */
+  display: flex;
+  transition: transform 1s ease-in-out;
+  }
+  
+  .hero-slide {
+    width: 100%;
+    flex-shrink: 0;
+    object-fit: cover;
+    height: 78vh;
+    min-height: 520px;
+    filter: brightness(0.98) saturate(0.95);
+  }
+
   .hero-carousel-controls {
   position: absolute;
   top: 50%;
@@ -541,10 +557,10 @@ body{
 
   <!-- HERO -->
   <section class="hero-wrap" aria-label="Hero">
-    <img class="hero-visual" src="main_background.png" alt="Hero background">
-    <div class="hero-carousel-controls">
-      <button id="hero-prev" class="hero-arrow">←</button>
-      <button id="hero-next" class="hero-arrow">→</button>
+    <div class="hero-slider">
+      <img class="hero-slide" src="main_background.png" alt="Hero 1">
+      <img class="hero-slide" src="second_background.png" alt="Hero 2">
+      <img class="hero-slide" src="third_background.png" alt="Hero 3">
     </div>
     <div class="hero-overlay" role="presentation">
       <div class="hero-content">
@@ -721,6 +737,20 @@ body{
   function updateHeroBackground() {
     heroImg.src = heroImages[currentIndex];
   }
+
+  const slides = document.querySelectorAll('.hero-slide');
+  const slider = document.querySelector('.hero-slider');
+  let currentSlide = 0;
+  const totalSlides = slides.length;
+  
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+  }
+  
+  // Auto-cycle every 5 seconds
+  setInterval(nextSlide, 5000);
+
   
   // Auto-cycle every 5 seconds
   setInterval(() => {
