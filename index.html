@@ -199,19 +199,29 @@ body{
 
 .hero-arrow {
   pointer-events: auto;
-  background: rgba(0,0,0,0.4);
-  border: none;
-  color: #fff;
-  padding: 12px 20px;
+  background: rgba(248,241,229,0.45); /* glass vibe */
+  border: 1px solid rgba(248,241,229,0.18);
+  color: #0f1622;
+  width: 50px;
+  height: 50px;
   font-size: 22px;
-  border-radius: 6px;
+  border-radius: 50%; /* circular */
   cursor: pointer;
-  transition: background 0.2s;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 6px 18px rgba(15,22,34,0.18);
 }
 
 .hero-arrow:hover {
-  background: rgba(0,0,0,0.6);
+  background: rgba(248,241,229,0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(15,22,34,0.18);
 }
+
 
 .hero-ctas .btn{
   background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
@@ -696,6 +706,41 @@ body{
   <footer class="footer">
     © <span id="year"></span> Yerram — All rights reserved.
   </footer>
+
+  <script>
+  const heroImg = document.querySelector(".hero-visual");
+  
+  const heroImages = [
+    "main_background.png",
+    "second_background.png",
+    "third_background.png"
+  ];
+  
+  let currentIndex = 0;
+  
+  function updateHeroBackground() {
+    heroImg.src = heroImages[currentIndex];
+  }
+  
+  // Auto-cycle every 5 seconds
+  setInterval(() => {
+    currentIndex = (currentIndex + 1) % heroImages.length;
+    updateHeroBackground();
+  }, 5000);
+  
+  // Next button
+  document.getElementById("hero-next").addEventListener("click", () => {
+    currentIndex = (currentIndex + 1) % heroImages.length;
+    updateHeroBackground();
+  });
+  
+  // Previous button
+  document.getElementById("hero-prev").addEventListener("click", () => {
+    currentIndex = (currentIndex - 1 + heroImages.length) % heroImages.length;
+    updateHeroBackground();
+  });
+  </script>
+
   
   <script>
     const heroImg = document.querySelector(".hero-visual");
@@ -726,33 +771,6 @@ body{
   </script>
 
   <script>
-  /* ---------- Sample products ---------- */
-  const products = [
-    {id:1,title:"Atlas Signet",price:185,image:"https://images.unsplash.com/photo-1549921296-3d9a1b0f2c6f?q=80"},
-    {id:2,title:"Linea Hoop",price:95,image:"https://images.unsplash.com/photo-1519659528534-3a6e6f9b8b96?q=80"},
-    {id:3,title:"Forge Cuff",price:220,image:"https://images.unsplash.com/photo-1530032584824-25b2a6d1464f?q=80"},
-    {id:4,title:"Helix Pendant",price:140,image:"https://images.unsplash.com/photo-1520975919257-3f1b6b8d3b8b?q=80"},
-    {id:5,title:"Arc Band",price:120,image:"https://images.unsplash.com/photo-1541534401786-1bdcba3a0c0b?q=80"},
-    {id:6,title:"Loop Stud",price:85,image:"https://images.unsplash.com/photo-1520975919257-3f1b6b8d3b8b?q=80"},
-  ];
-
-  const grid = document.getElementById("product-grid");
-  products.forEach(p=>{
-    const card = document.createElement("article");
-    card.className = "product-card";
-    card.innerHTML = `
-      <img class="product-thumb" src="${p.image}" alt="${p.title}">
-      <div class="product-body">
-        <div class="product-title">${p.title}</div>
-        <div class="product-price">$${p.price}</div>
-        <div style="display:flex;gap:10px;">
-          <button class="btn" onclick="addToCart(${p.id})">Add to bag</button>
-          <button class="btn outline" onclick="toggleFavorite(${p.id})" aria-label="Favorite ${p.title}">♡</button>
-        </div>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
 
   /* ---------- Cart / Drawer ---------- */
   const cartDrawer = document.getElementById("cartDrawer");
