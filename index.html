@@ -195,7 +195,12 @@ body{
   }
 
   .hero-slide {
-    object-fit: contain;
+    width: 100%;
+    flex-shrink: 0;
+    object-fit: cover;
+    height: 78vh;
+    min-height: 520px;
+    filter: brightness(0.98) saturate(0.95);
   }
 
   .hero-carousel-controls {
