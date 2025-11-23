@@ -51,16 +51,14 @@ body{
 }
 
 /* ---------- Masthead: centered logo + right icons ---------- */
-.masthead{
-  max-width:var(--max-content-width);
-  margin:0 auto;
-  padding:8px 20px;
-  height:var(--masthead-height);
-  display:grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items:center;
-  gap:12px;
-  background:transparent;
+.masthead {
+    max-width: var(--max-content-width);
+    margin: 0 auto;
+    padding: 8px 20px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
 }
 
 /* left column intentionally empty to visually center the logo */
@@ -83,12 +81,11 @@ body{
 
 /* logo sizing */
 .brand img.logo {
-  max-height:80px;
-  height:80px;
-  width:auto;
-  display:block;
-  object-fit:contain;
-  line-height:0;
+    height: 110px;
+    max-height: 110px;
+    width: auto;
+    margin-top: -14px;
+    margin-bottom: -14px;
 }
 
 /* optional brand text */
@@ -440,8 +437,7 @@ input:checked + .slider:before {
   .masthead .left-col{ display:flex; align-items:center; gap:8px; }
   .masthead .center-col{ justify-content:flex-start; padding-left:12px; }
   .brand img.logo{ max-height:80px; height:80px; }
-  /* .nav-inner{ padding:8px 14px; } */
-  .nav-inner{ padding: 6px 20px;height: 42px;}
+  .nav-inner{ padding: 6px 20px;height: 42px; }
 
   .primary-nav{ gap:16px; font-size:13px; }
   .icon-btn{ height:34px; width:34px; padding:6px;}
