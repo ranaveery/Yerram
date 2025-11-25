@@ -209,33 +209,6 @@ body{
   box-shadow: 0 6px 18px rgba(15,22,34,0.18);
 }
 
-.hero-slider {
-  position: relative;
-  display: flex;
-  transition: transform 1s ease-in-out;
-}
-
-.hero-slide {
-  flex: 0 0 100%;   /* <-- The important fix */
-  height: 78vh;
-  min-height: 520px;
-  max-height: 980px;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-  filter: brightness(0.98) saturate(0.95);
-}
-
-.hero-carousel-controls {
-  position: absolute;
-  top: 50%;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
 .hero-ctas .btn{
   background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
   border: 1px solid rgba(255,255,255,0.22);
@@ -694,9 +667,7 @@ input:checked + .slider:before {
   <!-- HERO -->
   <section class="hero-wrap" aria-label="Hero">
     <div class="hero-slider">
-      <img class="hero-slide" src="main_background.png" alt="Hero 1">
-      <img class="hero-slide" src="second_background.png" alt="Hero 2">
-      <img class="hero-slide" src="third_background.png" alt="Hero 3">
+      <img class="hero-slide" src="main_background.png" alt="Hero">
     </div>
     <div class="hero-overlay" role="presentation">
       <div class="hero-content">
