@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>A Little Something for Anshika 💌</title>
+<title>???</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
   * { box-sizing: border-box; }
@@ -10,12 +10,17 @@
     margin: 0;
     min-height: 100vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #ffdde1, #ffe4ec, #ffc9de);
+    background: #1a1a1f;
+    transition: background 0.6s ease;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow-x: hidden;
     position: relative;
+  }
+
+  body.unlocked {
+    background: linear-gradient(135deg, #ffdde1, #ffe4ec, #ffc9de);
   }
 
   .heart {
@@ -32,6 +37,25 @@
   @keyframes fall {
     to { transform: translateY(110vh) rotate(360deg); opacity: 0.2; }
   }
+
+  #lockCard {
+    background: #26262e;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  }
+  #lockCard h1 { color: #e8e8ec; letter-spacing: 4px; }
+  #lockCard .sub { color: #9a9aa5; }
+  #lockCard .emoji-big { filter: grayscale(1); opacity: 0.8; }
+  #lockCard #passInput {
+    background: #1a1a1f;
+    border-color: #3a3a44 !important;
+    color: #e8e8ec;
+  }
+  #lockCard #passInput::placeholder { color: #6a6a75; }
+  #lockCard .next-btn {
+    background: #4a4a55;
+  }
+  #lockCard .next-btn:hover { background: #5a5a66; }
+  #lockCard #lockError { color: #d97a7a !important; }
 
   .card {
     background: #fff;
@@ -207,7 +231,17 @@
 </head>
 <body>
 
-<div class="card">
+<div class="card" id="lockCard">
+  <div class="emoji-big">🔒</div>
+  <h1>???</h1>
+  <p class="sub">You'll need the code to see what's here.</p>
+  <input type="password" id="passInput" placeholder="Enter code" maxlength="4"
+    style="width:100%; padding:12px 14px; border-radius:14px; border:2px solid #ffb3c6; font-size:16px; text-align:center; margin-bottom:14px; outline:none;">
+  <div id="lockError" style="color:#d6336c; font-size:13px; margin-bottom:10px; display:none;">Nope — try again.</div>
+  <button class="next-btn" onclick="checkPassword()">Unlock</button>
+</div>
+
+<div class="card" id="mainCard" style="display:none;">
 
   <!-- Progress dots -->
   <div class="progress" id="progress"></div>
@@ -243,7 +277,7 @@
       <button class="opt-btn" onclick="select('activity','Dinner date 🍝',this)">Dinner date 🍝</button>
       <button class="opt-btn" onclick="select('activity','Movie night 🎬',this)">Movie night 🎬</button>
       <button class="opt-btn" onclick="select('activity','Boba + a long walk ☕',this)">Boba + a long walk ☕</button>
-      <button class="opt-btn" onclick="select('activity','I wanna get surprised 🎁',this)">I wanna get surprised 🎁</button>
+      <button class="opt-btn" onclick="select('activity','Surprise me 🎁',this)">Surprise me 🎁</button>
     </div>
     <div class="nav-row">
       <button class="nav-btn" onclick="goTo(1)">← Back</button>
@@ -285,7 +319,7 @@
   <div class="step" data-step="5">
     <div class="final-heart">💖</div>
     <h1>One last thing...</h1>
-    <p class="love-text">I love you Anshi</p>
+    <p class="love-text">I love you, Anshika.</p>
     <p class="sub">So... will you go on a date with me? 🥹</p>
     <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
       <button class="yes-btn" onclick="finish()">Yes, obviously 😍</button>
@@ -295,6 +329,8 @@
       <p class="sub" style="font-size:16px; color:#d6336c; font-weight:600;">Yay!! I'll text you the details 🥰🌸</p>
     </div>
   </div>
+
+</div>
 
 </div>
 
@@ -375,8 +411,24 @@
     }
   }
 
-  createHearts();
-  renderProgress();
+  function checkPassword() {
+    const input = document.getElementById('passInput');
+    if (input.value.trim() === '1289') {
+      document.getElementById('lockCard').style.display = 'none';
+      document.getElementById('mainCard').style.display = 'block';
+      document.body.classList.add('unlocked');
+      createHearts();
+      renderProgress();
+    } else {
+      document.getElementById('lockError').style.display = 'block';
+      input.value = '';
+      input.focus();
+    }
+  }
+
+  document.getElementById('passInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkPassword();
+  });
 </script>
 
 </body>
